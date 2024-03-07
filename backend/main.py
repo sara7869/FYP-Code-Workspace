@@ -8,14 +8,10 @@ import pickle
 
 app = Flask(__name__)
 
-# Load model
-random_forest_model = pickle.load(open('../Employee Analysis Attrition Report - Random Forest calssifier.pkl', 'rb'))
-bagging_classifier_model = pickle.load(open('../Employee Analysis Attrition Report - bagging classifier.pkl', 'rb'))
-adaboost_classifier_model = pickle.load(open('../Employee Analysis Attrition Report - Adaboost classifier.pkl', 'rb'))
-gradientboost_classifier_model = pickle.load(open('../Employee Analysis Attrition Report - Gradientboot classifier.pkl', 'rb'))
-knn_classifier_model = pickle.load(open('../Employee Analysis Attrition Report - KNN classifier.pkl', 'rb'))
-mlp_model = pickle.load(open('../Employee Analysis Attrition Report - MLP.pkl', 'rb'))
-
+# Load models
+ensemble_model_stacking = pickle.load(open('../ensemble_model_stacking.pkl', 'rb'))
+ensemble_model_voting = pickle.load(open('../ensemble_model_voting.pkl', 'rb'))
+ensemble_model_simple_average = pickle.load(open('../ensemble_model_simple_average.pkl', 'rb'))
 
 # Input data
 # Row 1100 - No
@@ -97,41 +93,6 @@ input_data2 = {
 input_data_df1 = pd.DataFrame(input_data1)
 input_data_df2 = pd.DataFrame(input_data2)
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello World!</p>"
-
-@app.route("/predict/random-forest")
-def randomForest():
-    line = predict(random_forest_model)
-    return line
-    
-@app.route("/predict/bagging-classifier")
-def baggingClassifier():
-    line = predict(bagging_classifier_model)
-    return line
-
-@app.route("/predict/adaboost-classifier")
-def adaboostClassifier():
-    line = predict(adaboost_classifier_model)
-    return line
-
-@app.route("/predict/gradientboost-classifier")
-def gradientboosterClassifier():
-    line = predict(gradientboost_classifier_model)
-    return line
-
-@app.route("/predict/knn-classifier")
-def knnClassifier():
-    line = predict(knn_classifier_model)
-    return line
-
-@app.route("/predict/mlp")
-def mlp():
-    line = predict(mlp_model)
-    return line
-
-    
 def predict(model):
     
     pred_testrow1 = model.predict(input_data_df1)
@@ -144,3 +105,26 @@ def predict(model):
     line: str = "<p>"+ "My 1st row prediction: Attrition: " + prediction_str1 +  "</p><p> My 2nd row prediction: Attrition: " + prediction_str2 + "</p>"
 
     return line
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello World!</p>"
+
+@app.route("/predict/ensemble-model-stacking") 
+def ensembleModelStacking():
+    # line = predict(ensemble_model_stacking)
+    line = "Test line for ensemble_model_stacking"
+    return line
+
+@app.route("/predict/ensemble-model-voting")
+def ensembleModelVoting():
+    line = predict(ensemble_model_voting)
+    return line
+
+@app.route("/predict/ensemble-model-simple-average")
+def ensembleModelSimpleAverage():
+    line = predict(ensemble_model_simple_average)
+    return line
+
+if __name__ == '__main__':
+    app.run(debug=True)
