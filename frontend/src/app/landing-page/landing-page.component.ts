@@ -22,6 +22,7 @@ export class LandingPageComponent implements OnInit {
   // EmployeeCount should be initialized to 1
 
   myForm = this.formBuilder.group({
+    PredictionName: '',
     Age: '',
     Attrition: '',
     BusinessTravel: '',
@@ -62,22 +63,41 @@ export class LandingPageComponent implements OnInit {
   });
   selectedJobRole: string = '';
 
-  predictionsList: Array<string> = [
-    'Prediction 1',
-    'Prediction 2',
-    'Prediction 3',
-    'Prediction 4',
-    'Prediction 5',
-    'Prediction 6',
-    'Prediction 7',
-    'Prediction 8',
-    'Prediction 9',
-  ];
+  predictionsList: any[] = [];
+
 
   constructor(
     private http: HttpClient,
     private formBuilder: FormBuilder
-  ) { }
+  ) {
+    const url = 'http://localhost:5000/recent_predictions';
+
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Handle the data from the response
+        console.log(data); // Replace this with your own logic to display the data
+        // Assign the data to the predictionsList array. Display the prediction name and formatted timestamp
+        this.predictionsList = data.map((prediction: any) => {
+          return {
+            prediction_name: prediction.prediction_name,
+            timestamp: new Date(prediction.timestamp).toLocaleString(),
+            input_data: prediction.input_data,
+            prediction_result: prediction.prediction_result
+          };
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching recent predictions:', error);
+      });
+
+
+  }
 
   ngOnInit(): void {
     // TODO: Get list of past predictions
@@ -120,6 +140,7 @@ export class LandingPageComponent implements OnInit {
   onPredictClick(): void {
     // TODO: Implement contacting flask API endpoint through an Angular service class
     let myFormConverted = {
+      PredictionName: this.myForm.value.PredictionName,
       Age: Number(this.myForm.value.Age),
       BusinessTravel: this.myForm.value.BusinessTravel,
       DailyRate: Number(this.myForm.value.DailyRate),
@@ -155,7 +176,7 @@ export class LandingPageComponent implements OnInit {
       YearsSinceLastPromotion: Number(this.myForm.value.YearsSinceLastPromotion),
       YearsWithCurrManager: Number(this.myForm.value.YearsWithCurrManager)
     };
-  
+
     console.log(myFormConverted);
 
     this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((response) => {

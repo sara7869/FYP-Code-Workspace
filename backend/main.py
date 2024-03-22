@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pickle
 from keras.models import load_model
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
@@ -22,11 +22,36 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import BaggingClassifier
-
+import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+# Create a database connection
+def get_db_connection():
+    conn = sqlite3.connect('predictions.db') # Use the correct path to your database file
+    conn.row_factory = sqlite3.Row # Optional: Enables dictionary-like access to columns
+    return conn
+
+# Create a table for prediction history
+def init_db():
+    with get_db_connection() as conn:
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS prediction_history (
+                id INTEGER PRIMARY KEY,
+                prediction_name TEXT NOT NULL,
+                timestamp TEXT NOT NULL,
+                input_data TEXT NOT NULL,
+                prediction TEXT NOT NULL
+            )
+        ''')
+
+# Initialize the database
+init_db()
+
+
 # Load the dataset
 project_data = pd.read_csv("../dataset/Employee Analysis Attrition Report/HR Employee Attrition.csv")
 X_train=project_data.drop(columns=["Attrition"])
@@ -77,12 +102,20 @@ def prepare_model(model_name, model):
     model.fit(X_train, y_train)
     return model
 
+# Initialize prediction name variable
+prediction_name = ""
 
 @app.route('/predict', methods=['POST'])
 @cross_origin()
 def makePredictions():
 
     form_data = request.json
+    
+    # Remove the prediction name field and assign to a variable
+    global prediction_name 
+    prediction_name = form_data.pop('PredictionName', None)
+    print("Prediction Name:", prediction_name)
+    
     df = pd.DataFrame(form_data, index=[0])
     processing.fit(X_train)
     
@@ -142,11 +175,64 @@ def makePredictions():
     print("Simple Average:", simple_average_prediction[0])
     print("Voting:", voting_prediction[0])
     
+    save_prediction_history(prediction_name, form_data, final_predictions)
+
     return {
         'predictions': final_predictions
     }
 
+# Function to save the prediction history
+def save_prediction_history(prediction_name, input_data, predictions):
+    with get_db_connection() as conn:
+        
+        current_timestamp = datetime.now().isoformat()
+        combined_predictions = ', '.join(predictions)
 
+        conn.execute('''
+            INSERT INTO prediction_history (prediction_name, timestamp, input_data, prediction)
+            VALUES (?, ?, ?, ?)
+        ''', (prediction_name, current_timestamp, str(input_data), str(combined_predictions)))
+        conn.commit()
+        
+@app.route('/recent_predictions', methods=['GET'])
+def get_recent_predictions():
+    with get_db_connection() as conn:
+        cursor = conn.execute('''
+            SELECT * FROM prediction_history
+            ORDER BY timestamp DESC
+            LIMIT 10
+        ''')
+        recent_predictions = cursor.fetchall()
+
+    # Convert the records to a list of dictionaries for JSON serialization
+    recent_predictions_list = [dict(row) for row in recent_predictions]
+    print(recent_predictions_list)
+    return jsonify(recent_predictions_list)
+
+# Function to test the database
+def test_db():
+    # Insert a test record
+    test_name = "Test prediction name"
+    test_input_data = "Test input data"
+    test_prediction = "Test prediction"
+    save_prediction_history(test_name, test_input_data, test_prediction)
+
+    # Query the test record
+    with get_db_connection() as conn:
+        cursor = conn.execute('''
+            SELECT * FROM prediction_history WHERE input_data = ? AND prediction = ?
+        ''', (test_input_data, test_prediction))
+        record = cursor.fetchone()
+
+    # Check if the test record was found
+    if record:
+        print("Database is working properly.")
+        print("Test record:", record)
+    else:
+        print("Database test failed.")
+
+# Run the database test
+# test_db()
 
 if __name__ == '__main__':
     app.run(debug=True)
