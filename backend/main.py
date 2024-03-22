@@ -150,18 +150,20 @@ def makePredictions():
     
     # Simple Averaging
     # 0 means the employee will not leave the company and 1 means the employee will leave the company
-    simple_average_prediction = np.round(np.mean(predictions, axis=0)).astype(int)
-
-    predictions_array = np.array(predictions)
+    # simple_average_prediction = np.round(np.mean(predictions, axis=0)).astype(int)
+    simple_average_prediction = np.mean(predictions, axis=0)
 
     # Voting
-    class_votes = np.round(np.mean(predictions, axis=0)).astype(int)
-    voting_prediction = np.where(np.sum(class_votes, axis=1) > predictions_array.shape[0] / 2, 1, 0)
+    # class_votes = np.round(np.mean(predictions, axis=0)).astype(int)
+    # voting_prediction = np.where(np.sum(class_votes, axis=1) > predictions_array.shape[0] / 2, 1, 0)
+    
+    class_votes = np.mean(predictions, axis=0)
+    voting_prediction = class_votes
     
     # Converting all predictions to Yes, No based on the threshold of 0.5
     # Yes - Employee will leave the company
     # No - Employee will not leave the company
-    final_predictions = [
+    binary_predictions = [
         "FNN: Yes" if prediction_fnn[0] > 0.5 else "FNN: No",
         "Wide and Deep : Yes" if prediction_wide_and_deep[0] > 0.5 else "Wide and Deep: No",
         "CNN: Yes" if prediction_cnn[0] > 0.5 else "CNN: No",
@@ -170,7 +172,31 @@ def makePredictions():
         "Voting: Yes" if voting_prediction[0] > 0.5 else "Voting: No"
     ]
     
-
+    final_predictions = [
+        "FNN: ", prediction_fnn[0],
+        "Wide and Deep: ", prediction_wide_and_deep[0],
+        "CNN: ", prediction_cnn[0],
+        "Stacking: ", prediction_stacking[0],
+        "Simple Average: ", simple_average_prediction[0],
+        "Voting: ", voting_prediction[0]
+    ]
+    
+    # convert float to string
+    fnn_strified = str(prediction_fnn[0])
+    
+    # final predictions with predictions with just the float value as string
+    
+    final_predictions = [
+        str(prediction_fnn[0][0]),
+        str(prediction_wide_and_deep[0][0]),
+        str(prediction_cnn[0][0]),
+        str(prediction_stacking[0][0]),
+        str(simple_average_prediction[0][0]),
+        str(voting_prediction[0][0])
+    ]
+    
+    # final_predictions = jsonify(final_predictions)
+    
     print("Predictions:")
     print("FNN:", prediction_fnn[0])
     print("Wide and Deep:", prediction_wide_and_deep[0])
@@ -180,7 +206,14 @@ def makePredictions():
     print("Simple Average:", simple_average_prediction[0])
     print("Voting:", voting_prediction[0])
     
-    save_prediction_history(prediction_name, form_data, final_predictions)
+    
+    
+    save_prediction_history(prediction_name, form_data, binary_predictions)
+
+    # Fix TypeError: Object of type ndarray is not JSON serializable at return statement
+    
+    # final_predictions_list = final_predictions.tolist()
+
 
     # Return final predictions 
     return {

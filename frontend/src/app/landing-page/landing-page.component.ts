@@ -119,8 +119,6 @@ export class LandingPageComponent implements OnInit {
       })
       .then(data => {
         // Handle the data from the response
-        // console.log(data); // Replace this with your own logic to display the data
-        // Assign the data to the predictionsList array. Display the prediction name and formatted timestamp
         this.predictionsList = data.map((prediction: any) => {
           return {
             prediction_name: prediction.prediction_name,
@@ -222,16 +220,11 @@ export class LandingPageComponent implements OnInit {
     console.log("myformConverted: ", myFormConverted);
 
     this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any) => {
-      // console.log(data);
-      // save to predictions array
       this.finalPredictions = data.predictions;
       console.log(this.finalPredictions);
     });
 
     this.togglePredictionResults();
-
-    // console log education  value
-    // console.log("Education value:", this.myForm.controls['Education'].value);
   }
 
   togglePredictionResults() {
