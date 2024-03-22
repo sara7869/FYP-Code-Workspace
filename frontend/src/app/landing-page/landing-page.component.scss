@@ -1,0 +1,35 @@
+.field {
+    margin-bottom: 0.5rem;
+    --tw-bg-opacity: 1;
+    background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+    // width: 100%;
+
+    padding: 0.5rem
+        /* 8px */
+    ;
+    border-radius: 0.25rem;
+    display: flex;
+
+    label {
+        display: flex;
+        align-items: center;
+    }
+
+    input,
+    select {
+        margin-left: auto;
+    }
+}
+
+// @media (min-width: 768px) {
+
+//     .field {
+//         width: 50%;
+//     }
+// }
+
+// @media (min-width: 1024px) {
+//     .field {
+//         width: 33.333333%;
+//     }
+// }
