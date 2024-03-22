@@ -19,42 +19,46 @@ import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common
 
 export class LandingPageComponent implements OnInit {
 
-  // Fields -	YearsWithCurrManager
+  // EmployeeCount should be initialized to 1
+
   myForm = this.formBuilder.group({
-    age: '',
-    business_travel: '',
-    daily_rate: '',
-    department: '',
-    distance_from_home: '',
-    education: '',
-    education_field: '',
-    employee_count: '1',
-    employee_number: '',
-    environment_satisfaction: '',
-    gender: '',
-    hourly_rate: '',
-    job_involvement: '',
-    job_level: '',
-    job_role: '',
-    job_satisfaction: '',
-    marital_status: '',
-    monthly_income: '',
-    monthly_rate: '',
-    num_companies_worked: '',
-    over_18: '',
-    over_time: '',
-    percent_salary_hike: '',
-    performance_rating: '',
-    relationship_satisfaction: '',
-    standard_hours: '',
-    stock_option_level: '',
-    total_working_years: '',
-    training_times_last_year: '',
-    work_life_balance: '',
-    years_at_company: '',
-    years_in_current_role: '',
-    years_since_last_promotion: '',
-    years_with_curr_manager: ''
+    Age: '',
+    Attrition: '',
+    BusinessTravel: '',
+    DailyRate: '',
+    Department: '',
+    DistanceFromHome: '',
+    Education: '',
+    EducationField: '',
+    EmployeeCount: '1',
+    EmployeeNumber: '',
+    EnvironmentSatisfaction: '',
+    Gender: '',
+    HourlyRate: '',
+    JobInvolvement: '',
+    JobLevel: '',
+    JobRole: '',
+    JobSatisfaction: '',
+    MaritalStatus: '',
+    MonthlyIncome: '',
+    MonthlyRate: '',
+    NumCompaniesWorked: '',
+    Over18: '',
+    OverTime: '',
+    PercentSalaryHike: '',
+    PerformanceRating: '',
+    RelationshipSatisfaction: '',
+    StandardHours: '',
+    StockOptionLevel: '',
+    TotalWorkingYears: '',
+    TrainingTimesLastYear: '',
+    WorkLifeBalance: '',
+    YearsAtCompany: '',
+    YearsInCurrentRole: '',
+    YearsSinceLastPromotion: '',
+    YearsWithCurrManager: ''
+
+
   });
   selectedJobRole: string = '';
 
@@ -78,16 +82,6 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
     // TODO: Get list of past predictions
     console.log("Page initialized");
-  }
-
-  onPredictClick(): void {
-    // TODO: Implement contacting flask API endpoint through an Angular service class
-    this.myForm.controls['employee_count'].setValue('1');
-    console.log(this.myForm.value);
-    this.http.post('http://localhost:5000/predict', this.myForm.value).subscribe((data: any) => {
-      console.log(data);
-      this.predictionsList = data.predictions;
-    });
   }
 
   onCancelClick(): void {
@@ -118,9 +112,58 @@ export class LandingPageComponent implements OnInit {
 
     // Set the job level based on the selected job role
     // Use a type assertion to tell TypeScript that jobLevelMapping[this.selectedJobRole] is a number
-    this.myForm.controls['job_level'].setValue(String(jobLevelMapping[this.selectedJobRole]));
+    this.myForm.controls['JobLevel'].setValue(String(jobLevelMapping[this.selectedJobRole]));
     console.log("Job level set to:", jobLevelMapping[this.selectedJobRole]);
 
+  }
+
+  onPredictClick(): void {
+    // TODO: Implement contacting flask API endpoint through an Angular service class
+    let myFormConverted = {
+      Age: Number(this.myForm.value.Age),
+      BusinessTravel: this.myForm.value.BusinessTravel,
+      DailyRate: Number(this.myForm.value.DailyRate),
+      Department: this.myForm.value.Department,
+      DistanceFromHome: Number(this.myForm.value.DistanceFromHome),
+      Education: Number(this.myForm.value.Education),
+      EducationField: this.myForm.value.EducationField,
+      EmployeeCount: Number(this.myForm.value.EmployeeCount),
+      EmployeeNumber: Number(this.myForm.value.EmployeeNumber),
+      EnvironmentSatisfaction: Number(this.myForm.value.EnvironmentSatisfaction),
+      Gender: this.myForm.value.Gender,
+      HourlyRate: Number(this.myForm.value.HourlyRate),
+      JobInvolvement: Number(this.myForm.value.JobInvolvement),
+      JobLevel: Number(this.myForm.value.JobLevel),
+      JobRole: this.myForm.value.JobRole,
+      JobSatisfaction: Number(this.myForm.value.JobSatisfaction),
+      MaritalStatus: this.myForm.value.MaritalStatus,
+      MonthlyIncome: Number(this.myForm.value.MonthlyIncome),
+      MonthlyRate: Number(this.myForm.value.MonthlyRate),
+      NumCompaniesWorked: Number(this.myForm.value.NumCompaniesWorked),
+      Over18: this.myForm.value.Over18,
+      OverTime: this.myForm.value.OverTime,
+      PercentSalaryHike: Number(this.myForm.value.PercentSalaryHike),
+      PerformanceRating: Number(this.myForm.value.PerformanceRating),
+      RelationshipSatisfaction: Number(this.myForm.value.RelationshipSatisfaction),
+      StandardHours: Number(this.myForm.value.StandardHours),
+      StockOptionLevel: Number(this.myForm.value.StockOptionLevel),
+      TotalWorkingYears: Number(this.myForm.value.TotalWorkingYears),
+      TrainingTimesLastYear: Number(this.myForm.value.TrainingTimesLastYear),
+      WorkLifeBalance: Number(this.myForm.value.WorkLifeBalance),
+      YearsAtCompany: Number(this.myForm.value.YearsAtCompany),
+      YearsInCurrentRole: Number(this.myForm.value.YearsInCurrentRole),
+      YearsSinceLastPromotion: Number(this.myForm.value.YearsSinceLastPromotion),
+      YearsWithCurrManager: Number(this.myForm.value.YearsWithCurrManager)
+    };
+  
+    console.log(myFormConverted);
+
+    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((response) => {
+      console.log(response);
+    });
+
+    // console log education  value
+    console.log("Education value:", this.myForm.controls['Education'].value);
   }
 
 }

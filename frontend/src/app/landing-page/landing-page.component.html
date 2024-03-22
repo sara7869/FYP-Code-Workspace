@@ -22,14 +22,14 @@
                 <!-- Age -->
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="age" class="mr-2">Age</label>
-                    <input name="age" id="age" formControlName="age" type="number" min="18" step="1" max="120"
+                    <input name="age" id="age" formControlName="Age" type="number" min="18" step="1" max="120"
                         class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <!-- Business Travel -->
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="business_travel" class="mr-2">Business Travel</label>
-                    <select name="business_travel" id="business_travel" formControlName="business_travel"
+                    <select name="business_travel" id="BusinessTravel" formControlName="BusinessTravel"
                         class="rounded px-2 py-1">
                         <option value="Travel_Rarely">Travel Rarely</option>
                         <option value="Travel_Frequently">Travel Frequently</option>
@@ -39,13 +39,13 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="daily_rate" class="mr-2">Daily Rate</label>
-                    <input name="daily_rate" id="daily_rate" formControlName="daily_rate" type="number" min="0" step="1"
+                    <input name="daily_rate" id="daily_rate" formControlName="DailyRate" type="number" min="0" step="1"
                         max="100000" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="department" class="mr-2">Department</label>
-                    <select name="department" id="department" formControlName="department" class="rounded px-2 py-1">
+                    <select name="department" id="department" formControlName="Department" class="rounded px-2 py-1">
                         <option value="Research & Development">Research & Development</option>
                         <option value="Human Resources">Human Resources</option>
                         <option value="Sales">Sales</option>
@@ -54,24 +54,24 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="distance_from_home" class="mr-2">Distance From Home</label>
-                    <input name="distance_from_home" id="distance_from_home" formControlName="distance_from_home"
+                    <input name="distance_from_home" id="DistanceFromHome" formControlName="distance_from_home"
                         type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="education" class="mr-2">Education</label>
-                    <select name="education" id="education" formControlName="education" class="rounded px-2 py-1">
-                        <option value="1">Below College</option>
-                        <option value="2">College</option>
-                        <option value="3">Bachelor</option>
-                        <option value="4">Master</option>
-                        <option value="5">Doctor</option>
+                    <select name="education" id="education" formControlName="Education" class="rounded px-2 py-1">
+                        <option [value]="1">Below College</option>
+                        <option [value]="2">College</option>
+                        <option [value]="3">Bachelor</option>
+                        <option [value]="4">Master</option>
+                        <option [value]="5">Doctor</option>
                     </select>
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="education_field" class="mr-2">Education Field</label>
-                    <select name="education_field" id="education_field" formControlName="education_field"
+                    <select name="education_field" id="education_field" formControlName="EducationField"
                         class="rounded px-2 py-1">
                         <option value="Life Sciences">Life Sciences</option>
                         <option value="Medical">Medical</option>
@@ -86,14 +86,14 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="employee_number" class="mr-2">Employee Number</label>
-                    <input id="employee_number" name="employee_number" type="number" formControlName="employee_number"
+                    <input id="employee_number" name="employee_number" type="number" formControlName="EmployeeNumber"
                         min="0" step="1" max="100000" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="environment_satisfaction" class="mr-2">Environment Satisfaction</label>
                     <select name="environment_satisfaction" id="environment_satisfaction"
-                        formControlName="environment_satisfaction" class="rounded px-2 py-1">
+                        formControlName="EnvironmentSatisfaction" class="rounded px-2 py-1">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
                         <option value="3">High</option>
@@ -103,7 +103,7 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="gender" class="mr-2">Gender</label>
-                    <select name="gender" id="gender" formControlName="gender" class="rounded px-2 py-1">
+                    <select name="gender" id="gender" formControlName="Gender" class="rounded px-2 py-1">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
@@ -111,13 +111,13 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="hourly_rate" class="mr-2">Hourly Rate</label>
-                    <input name="hourly_rate" id="hourly_rate" formControlName="hourly_rate" type="number" min="0"
+                    <input name="hourly_rate" id="hourly_rate" formControlName="HourlyRate" type="number" min="0"
                         step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="job_involvement" class="mr-2">Job Involvement</label>
-                    <select name="job_involvement" id="job_involvement" formControlName="job_involvement"
+                    <select name="job_involvement" id="job_involvement" formControlName="JobInvolvement"
                         class="rounded px-2 py-1">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
@@ -128,7 +128,7 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="job_role" class="mr-2">Job Role</label>
-                    <select name="job_role" id="job_role" formControlName="job_role" class="rounded px-2 py-1"
+                    <select name="job_role" id="job_role" formControlName="JobRole" class="rounded px-2 py-1"
                         [(ngModel)]="selectedJobRole" (change)="onJobRoleSelected($event)">
                         <option value="Healthcare Representative">Healthcare Representative</option>
                         <option value="Human Resources">Human Resources</option>
@@ -142,23 +142,16 @@
                     </select>
                 </div>
 
-                <!-- Job level should be auto-filled based on job role. Cannot be changed by user -->
-                <!-- Job level 1 - Roles -  Sales Representative, Laboratory Technician, Human Resources, Research Scientist -->
-                <!-- Job level 2 - Roles - Healthcare Representative, Sales Executive -->
-                <!-- Job level 3 - Roles - Manager, Research Director -->
-                <!-- Job level 4 - Roles - Manufacturing Director -->
-                <!-- Job level 5 - Roles - Executive Director, Director -->
-                <!-- Make it an uneditable field. Set it's value based on role -->
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="job_level" class="mr-2">Job Level</label>
-                    <input name="job_level" id="job_level" formControlName="job_level" type="number" min="1" step="1"
+                    <input name="job_level" id="job_level" formControlName="JobLevel" type="number" min="1" step="1"
                         max="5" class="border rounded w-16 px-2 py-1" readonly>
                 </div>
 
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="job_satisfaction" class="mr-2">Job Satisfaction</label>
-                    <select name="job_satisfaction" id="job_satisfaction" formControlName="job_satisfaction"
+                    <select name="job_satisfaction" id="job_satisfaction" formControlName="JobSatisfaction"
                         class="rounded px-2 py-1">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
@@ -169,7 +162,7 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="marital_status" class="mr-2">Marital Status</label>
-                    <select name="marital_status" id="marital_status" formControlName="marital_status"
+                    <select name="marital_status" id="marital_status" formControlName="MaritalStatus"
                         class="rounded px-2 py-1">
                         <option value="Single">Single</option>
                         <option value="Married">Married</option>
@@ -179,25 +172,25 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="monthly_income" class="mr-2">Monthly Income</label>
-                    <input name="monthly_income" id="monthly_income" formControlName="monthly_income" type="number"
+                    <input name="monthly_income" id="monthly_income" formControlName="MonthlyIncome" type="number"
                         min="0" step="1" max="100000" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="monthly_rate" class="mr-2">Monthly Rate</label>
-                    <input name="monthly_rate" id="monthly_rate" formControlName="monthly_rate" type="number" min="0"
+                    <input name="monthly_rate" id="monthly_rate" formControlName="MonthlyRate" type="number" min="0"
                         step="1" max="100000" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="num_companies_worked" class="mr-2">Num Companies Worked</label>
-                    <input name="num_companies_worked" id="num_companies_worked" formControlName="num_companies_worked"
+                    <input name="num_companies_worked" id="num_companies_worked" formControlName="NumCompaniesWorked"
                         type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="over_18" class="mr-2">Over 18</label>
-                    <select name="over_18" id="over_18" formControlName="over_18" class="rounded px-2 py-1">
+                    <select name="over_18" id="over_18" formControlName="Over18" class="rounded px-2 py-1">
                         <option value="Y">Yes</option>
                         <option value="N">No</option>
                     </select>
@@ -205,7 +198,7 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="over_time" class="mr-2">Over Time</label>
-                    <select name="over_time" id="over_time" formControlName="over_time" class="rounded px-2 py-1">
+                    <select name="over_time" id="over_time" formControlName="OverTime" class="rounded px-2 py-1">
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select>
@@ -213,13 +206,13 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="percent_salary_hike" class="mr-2">Percent Salary Hike</label>
-                    <input name="percent_salary_hike" id="percent_salary_hike" formControlName="percent_salary_hike"
+                    <input name="percent_salary_hike" id="percent_salary_hike" formControlName="PercentSalaryHike"
                         type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="performance_rating" class="mr-2">Performance Rating</label>
-                    <select name="performance_rating" id="performance_rating" formControlName="performance_rating"
+                    <select name="performance_rating" id="performance_rating" formControlName="PerformanceRating"
                         class="rounded px-2 py-1">
                         <option value="3">3</option>
                         <option value="4">4</option>
@@ -229,7 +222,7 @@
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="relationship_satisfaction" class="mr-2">Relationship Satisfaction</label>
                     <select name="relationship_satisfaction" id="relationship_satisfaction"
-                        formControlName="relationship_satisfaction" class="rounded px-2 py-1">
+                        formControlName="RelationshipSatisfaction" class="rounded px-2 py-1">
                         <option value="1">Low</option>
                         <option value="2">Medium</option>
                         <option value="3">High</option>
@@ -239,13 +232,13 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="standard_hours" class="mr-2">Standard Hours</label>
-                    <input name="standard_hours" id="standard_hours" formControlName="standard_hours" type="number"
+                    <input name="standard_hours" id="standard_hours" formControlName="StandardHours" type="number"
                         min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="stock_option_level" class="mr-2">Stock Option Level</label>
-                    <select name="stock_option_level" id="stock_option_level" formControlName="stock_option_level"
+                    <select name="stock_option_level" id="stock_option_level" formControlName="StockOptionLevel"
                         class="rounded px-2 py-1">
                         <option value="0">0</option>
                         <option value="1">1</option>
@@ -256,20 +249,20 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="total_working_years" class="mr-2">Total Working Years</label>
-                    <input name="total_working_years" id="total_working_years" formControlName="total_working_years"
+                    <input name="total_working_years" id="total_working_years" formControlName="TotalWorkingYears"
                         type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="training_times_last_year" class="mr-2">Training Times Last Year</label>
                     <input name="training_times_last_year" id="training_times_last_year"
-                        formControlName="training_times_last_year" type="number" min="0" step="1" max="100"
+                        formControlName="TrainingTimesLastYear" type="number" min="0" step="1" max="100"
                         class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="work_life_balance" class="mr-2">Work Life Balance</label>
-                    <select name="work_life_balance" id="work_life_balance" formControlName="work_life_balance"
+                    <select name="work_life_balance" id="work_life_balance" formControlName="WorkLifeBalance"
                         class="rounded px-2 py-1">
                         <option value="1">Bad</option>
                         <option value="2">Good</option>
@@ -280,28 +273,28 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="years_at_company" class="mr-2">Years At Company</label>
-                    <input name="years_at_company" id="years_at_company" formControlName="years_at_company"
+                    <input name="years_at_company" id="years_at_company" formControlName="YearsAtCompany"
                         type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="years_in_current_role" class="mr-2">Years In Current Role</label>
                     <input name="years_in_current_role" id="years_in_current_role"
-                        formControlName="years_in_current_role" type="number" min="0" step="1" max="100"
+                        formControlName="YearsInCurrentRole" type="number" min="0" step="1" max="100"
                         class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="years_since_last_promotion" class="mr-2">Years Since Last Promotion</label>
                     <input name="years_since_last_promotion" id="years_since_last_promotion"
-                        formControlName="years_since_last_promotion" type="number" min="0" step="1" max="100"
+                        formControlName="YearsSinceLastPromotion" type="number" min="0" step="1" max="100"
                         class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="years_with_curr_manager" class="mr-2">Years With Current Manager</label>
                     <input name="years_with_curr_manager" id="years_with_curr_manager"
-                        formControlName="years_with_curr_manager" type="number" min="0" step="1" max="100"
+                        formControlName="YearsWithCurrManager" type="number" min="0" step="1" max="100"
                         class="border rounded w-16 px-2 py-1">
                 </div>
 

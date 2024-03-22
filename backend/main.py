@@ -1,5 +1,3 @@
-# The code snippet for converting the job role value from the frontend form to a numerical value to get job level value will be done in line 15-17
-
 from flask import Flask
 from flask_cors import CORS, cross_origin
 import pickle
@@ -8,37 +6,147 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pickle
+from keras.models import load_model
 from flask import Flask, request
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import TruncatedSVD
+from sklearn.preprocessing import LabelEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import TruncatedSVD
+from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import BaggingClassifier
+
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+# Load the dataset
+project_data = pd.read_csv("../dataset/Employee Analysis Attrition Report/HR Employee Attrition.csv")
+X_train=project_data.drop(columns=["Attrition"])
+y_train=project_data["Attrition"]
+X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.3)
 
-# Load models
-ensemble_model_stacking = pickle.load(open('../ensemble_model_stacking.pkl', 'rb'))
-ensemble_model_voting = pickle.load(open('../ensemble_model_voting.pkl', 'rb'))
-ensemble_model_simple_average = pickle.load(open('../ensemble_model_simple_average.pkl', 'rb'))
+# Load Base Models
+fnn_model = load_model("../fnn_model.h5")
+wide_and_deep_model = load_model("../wide_and_deep_model.h5")
+cnn_model = load_model("../cnn_model.h5")
+
+# Load Stacking Ensemble Model
+meta_model = load_model("../stacking_ensemble_model.h5")
+
+numeric_columns = ['Age', 'DailyRate', 'DistanceFromHome', 'Education', 'EmployeeCount', 'EmployeeNumber', 'EnvironmentSatisfaction', 
+                    'HourlyRate', 'JobInvolvement', 'JobLevel', 'JobSatisfaction', 'MonthlyIncome', 'MonthlyRate', 'NumCompaniesWorked', 
+                    'PercentSalaryHike', 'PerformanceRating', 'RelationshipSatisfaction', 'StandardHours', 'StockOptionLevel', 
+                    'TotalWorkingYears', 'TrainingTimesLastYear', 'WorkLifeBalance', 'YearsAtCompany', 'YearsInCurrentRole', 
+                    'YearsSinceLastPromotion', 'YearsWithCurrManager']
+
+categorical_columns = ['BusinessTravel', 'Department', 'EducationField', 'Gender', 'JobRole', 'MaritalStatus', 'Over18', 'OverTime']
+
+# No. of columns in total - 35
+
+numeric_features = Pipeline([
+    ('handlingmissingvalues', SimpleImputer(strategy='median')),
+    ('scaling', StandardScaler(with_mean=True))
+])
+
+categorical_features = Pipeline([
+    ('handlingmissingvalues', SimpleImputer(strategy='most_frequent')),
+    ('encoding', OneHotEncoder()),
+    ('scaling', StandardScaler(with_mean=False))
+])
+
+processing = ColumnTransformer([
+    ('numeric', numeric_features, numeric_columns),
+    ('categorical', categorical_features, categorical_columns)
+])
 
 
-# Implement the backend API for predictions using all 3 models using form data from angular 
-# frontend
+def prepare_model(model_name, model):
+    model = Pipeline(steps= [
+        ('processing',processing),
+        ('pca', TruncatedSVD(n_components=3, random_state=12)),
+        (model_name, model)
+    ])
+    model.fit(X_train, y_train)
+    return model
+
+
 @app.route('/predict', methods=['POST'])
 @cross_origin()
-def predict():
-    # Get the form data from the frontend
-    form_data = request.get_json()
-    print(form_data)
-    # Predict using the 3 models
-    prediction_stacking = ensemble_model_stacking.predict(form_data)
-    prediction_voting = ensemble_model_voting.predict(form_data)
-    prediction_simple_average = ensemble_model_simple_average.predict(form_data)
-    # Return the predictions to the frontend
+def makePredictions():
+
+    form_data = request.json
+    df = pd.DataFrame(form_data, index=[0])
+    processing.fit(X_train)
+    
+    algorithms = [('bagging classifier', BaggingClassifier()), 
+              ('MLP', MLPClassifier())
+             ]
+
+    for index, tup in enumerate(algorithms):
+        model = prepare_model(tup[0],tup[1])
+        
+    # Preprocess the form data
+    X_form_transformed = model.named_steps['processing'].transform(df)
+    X_form_svd = model.named_steps['pca'].transform(X_form_transformed)
+    
+    X_form_reshaped = np.expand_dims(X_form_svd, axis=2)
+    
+    wd_input_data = [X_form_svd, X_form_svd]
+
+    # Make a prediction using the base models
+    prediction_fnn = fnn_model.predict(X_form_svd)
+    prediction_wide_and_deep = wide_and_deep_model.predict(wd_input_data)
+    prediction_cnn = cnn_model.predict(X_form_reshaped)
+
+    # Make a prediction using the stacking ensemble model
+    predictions = [prediction_fnn, prediction_wide_and_deep, prediction_cnn]
+    meta_X = np.concatenate(predictions, axis=1)
+    prediction_stacking = meta_model.predict(meta_X)
+    
+    # Simple Averaging
+    # 0 means the employee will not leave the company and 1 means the employee will leave the company
+    simple_average_prediction = np.round(np.mean(predictions, axis=0)).astype(int)
+
+    predictions_array = np.array(predictions)
+
+    # Voting
+    class_votes = np.round(np.mean(predictions, axis=0)).astype(int)
+    voting_prediction = np.where(np.sum(class_votes, axis=1) > predictions_array.shape[0] / 2, 1, 0)
+    
+    # Converting all predictions to Yes, No based on the threshold of 0.5
+    # Yes - Employee will leave the company
+    # No - Employee will not leave the company
+    final_predictions = [
+        "fnn: Yes" if prediction_fnn[0] > 0.5 else "fnn: No",
+        "wide_and_deep: Yes" if prediction_wide_and_deep[0] > 0.5 else "wide_and_deep: No",
+        "cnn: Yes" if prediction_cnn[0] > 0.5 else "cnn: No",
+        "stacking: Yes" if prediction_stacking[0] > 0.5 else "stacking: No",
+        "simple_average: Yes" if simple_average_prediction[0] > 0.5 else "simple_average: No",
+        "voting: Yes" if voting_prediction[0] > 0.5 else "voting: No"
+    ]
+
+    print("Predictions:")
+    print("FNN:", prediction_fnn[0])
+    print("Wide and Deep:", prediction_wide_and_deep[0])
+    print("CNN:", prediction_cnn[0])
+    
+    print("Stacking:", prediction_stacking[0])
+    print("Simple Average:", simple_average_prediction[0])
+    print("Voting:", voting_prediction[0])
+    
     return {
-        "prediction_stacking": prediction_stacking,
-        "prediction_voting": prediction_voting,
-        "prediction_simple_average": prediction_simple_average
+        'predictions': final_predictions
     }
-    # return form_data
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
