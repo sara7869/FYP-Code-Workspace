@@ -116,6 +116,8 @@ def makePredictions():
     prediction_name = form_data.pop('PredictionName', None)
     print("Prediction Name:", prediction_name)
     
+    # print("Form Data:", form_data)
+    
     df = pd.DataFrame(form_data, index=[0])
     processing.fit(X_train)
     
@@ -125,6 +127,8 @@ def makePredictions():
 
     for index, tup in enumerate(algorithms):
         model = prepare_model(tup[0],tup[1])
+        
+    print("df:", df)
         
     # Preprocess the form data
     X_form_transformed = model.named_steps['processing'].transform(df)
@@ -158,13 +162,14 @@ def makePredictions():
     # Yes - Employee will leave the company
     # No - Employee will not leave the company
     final_predictions = [
-        "fnn: Yes" if prediction_fnn[0] > 0.5 else "fnn: No",
-        "wide_and_deep: Yes" if prediction_wide_and_deep[0] > 0.5 else "wide_and_deep: No",
-        "cnn: Yes" if prediction_cnn[0] > 0.5 else "cnn: No",
-        "stacking: Yes" if prediction_stacking[0] > 0.5 else "stacking: No",
-        "simple_average: Yes" if simple_average_prediction[0] > 0.5 else "simple_average: No",
-        "voting: Yes" if voting_prediction[0] > 0.5 else "voting: No"
+        "FNN: Yes" if prediction_fnn[0] > 0.5 else "FNN: No",
+        "Wide and Deep : Yes" if prediction_wide_and_deep[0] > 0.5 else "Wide and Deep: No",
+        "CNN: Yes" if prediction_cnn[0] > 0.5 else "CNN: No",
+        "Stacking: Yes" if prediction_stacking[0] > 0.5 else "Stacking: No",
+        "Simple Average: Yes" if simple_average_prediction[0] > 0.5 else "Simple Average: No",
+        "Voting: Yes" if voting_prediction[0] > 0.5 else "Voting: No"
     ]
+    
 
     print("Predictions:")
     print("FNN:", prediction_fnn[0])
@@ -177,8 +182,9 @@ def makePredictions():
     
     save_prediction_history(prediction_name, form_data, final_predictions)
 
+    # Return final predictions 
     return {
-        'predictions': final_predictions
+        "predictions": final_predictions
     }
 
 # Function to save the prediction history

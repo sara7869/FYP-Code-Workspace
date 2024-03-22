@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
 
@@ -19,51 +19,89 @@ import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common
 
 export class LandingPageComponent implements OnInit {
 
-  // EmployeeCount should be initialized to 1
+  showPredictionResults = false;
 
   myForm = this.formBuilder.group({
-    PredictionName: '',
-    Age: '',
-    Attrition: '',
-    BusinessTravel: '',
-    DailyRate: '',
-    Department: '',
-    DistanceFromHome: '',
-    Education: '',
-    EducationField: '',
-    EmployeeCount: '1',
-    EmployeeNumber: '',
-    EnvironmentSatisfaction: '',
-    Gender: '',
-    HourlyRate: '',
-    JobInvolvement: '',
-    JobLevel: '',
-    JobRole: '',
-    JobSatisfaction: '',
-    MaritalStatus: '',
-    MonthlyIncome: '',
-    MonthlyRate: '',
-    NumCompaniesWorked: '',
-    Over18: '',
-    OverTime: '',
-    PercentSalaryHike: '',
-    PerformanceRating: '',
-    RelationshipSatisfaction: '',
-    StandardHours: '',
-    StockOptionLevel: '',
-    TotalWorkingYears: '',
-    TrainingTimesLastYear: '',
-    WorkLifeBalance: '',
-    YearsAtCompany: '',
-    YearsInCurrentRole: '',
-    YearsSinceLastPromotion: '',
-    YearsWithCurrManager: ''
+    // PredictionName: new FormControl('', Validators.required),
+    // Age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(120)]),
+    // BusinessTravel: new FormControl('', Validators.required),
+    // DailyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // Department: new FormControl('', Validators.required),
+    // DistanceFromHome: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // Education: new FormControl('', Validators.required),
+    // EducationField: new FormControl('', Validators.required),
+    // EmployeeCount: new FormControl('1'),
+    // EmployeeNumber: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // EnvironmentSatisfaction: new FormControl('', Validators.required),
+    // Gender: new FormControl('', Validators.required),
+    // HourlyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // JobInvolvement: new FormControl('', Validators.required),
+    // JobRole: new FormControl('', Validators.required),
+    // JobLevel: new FormControl('', [Validators.required, Validators.min(1), Validators.max(5)]),
+    // JobSatisfaction: new FormControl('', Validators.required),
+    // MaritalStatus: new FormControl('', Validators.required),
+    // MonthlyIncome: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // MonthlyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // NumCompaniesWorked: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // Over18: new FormControl('', Validators.required),
+    // OverTime: new FormControl('', Validators.required),
+    // PercentSalaryHike: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // PerformanceRating: new FormControl('', Validators.required),
+    // RelationshipSatisfaction: new FormControl('', Validators.required),
+    // StandardHours: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // StockOptionLevel: new FormControl('', Validators.required),
+    // TotalWorkingYears: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // TrainingTimesLastYear: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // WorkLifeBalance: new FormControl('', Validators.required),
+    // YearsAtCompany: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // YearsInCurrentRole: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // YearsSinceLastPromotion: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // YearsWithCurrManager: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)])
 
+    // For easy testing, we can pre-populate the form with some values
+    PredictionName: 'Test Prediction',
+    Age: '25',
+    BusinessTravel: 'Travel_Rarely',
+    DailyRate: '500',
+    Department: 'Research & Development',
+    DistanceFromHome: '5',
+    Education: '1',
+    EducationField: 'Life Sciences',
+    EmployeeCount: '1',
+    EmployeeNumber: '1',
+    EnvironmentSatisfaction: '2',
+    Gender: 'Male',
+    HourlyRate: '50',
+    JobInvolvement: '3',
+    JobLevel: '1',
+    JobRole: 'Research Scientist',
+    JobSatisfaction: '2',
+    MaritalStatus: 'Single',
+    MonthlyIncome: '3000',
+    MonthlyRate: '10000',
+    NumCompaniesWorked: '1',
+    Over18: 'Y',
+    OverTime: 'No',
+    PercentSalaryHike: '15',
+    PerformanceRating: '3',
+    RelationshipSatisfaction: '3',
+    StandardHours: '8',
+    StockOptionLevel: '0',
+    TotalWorkingYears: '1',
+    TrainingTimesLastYear: '1',
+    WorkLifeBalance: '3',
+    YearsAtCompany: '1',
+    YearsInCurrentRole: '1',
+    YearsSinceLastPromotion: '0',
+    YearsWithCurrManager: '0'
 
   });
+
   selectedJobRole: string = '';
 
   predictionsList: any[] = [];
+
+  finalPredictions: any = {};
 
 
   constructor(
@@ -81,7 +119,7 @@ export class LandingPageComponent implements OnInit {
       })
       .then(data => {
         // Handle the data from the response
-        console.log(data); // Replace this with your own logic to display the data
+        // console.log(data); // Replace this with your own logic to display the data
         // Assign the data to the predictionsList array. Display the prediction name and formatted timestamp
         this.predictionsList = data.map((prediction: any) => {
           return {
@@ -95,7 +133,6 @@ export class LandingPageComponent implements OnInit {
       .catch(error => {
         console.error('Error fetching recent predictions:', error);
       });
-
 
   }
 
@@ -133,11 +170,16 @@ export class LandingPageComponent implements OnInit {
     // Set the job level based on the selected job role
     // Use a type assertion to tell TypeScript that jobLevelMapping[this.selectedJobRole] is a number
     this.myForm.controls['JobLevel'].setValue(String(jobLevelMapping[this.selectedJobRole]));
-    console.log("Job level set to:", jobLevelMapping[this.selectedJobRole]);
+    // console.log("Job level set to:", jobLevelMapping[this.selectedJobRole]);
 
   }
 
   onPredictClick(): void {
+    // Check if form is valid
+    // if (!this.myForm.valid) {
+    //   console.log("Form is invalid");
+    //   return;
+    // }
     // TODO: Implement contacting flask API endpoint through an Angular service class
     let myFormConverted = {
       PredictionName: this.myForm.value.PredictionName,
@@ -177,14 +219,23 @@ export class LandingPageComponent implements OnInit {
       YearsWithCurrManager: Number(this.myForm.value.YearsWithCurrManager)
     };
 
-    console.log(myFormConverted);
+    console.log("myformConverted: ", myFormConverted);
 
-    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((response) => {
-      console.log(response);
+    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any) => {
+      // console.log(data);
+      // save to predictions array
+      this.finalPredictions = data.predictions;
+      console.log(this.finalPredictions);
     });
 
+    this.togglePredictionResults();
+
     // console log education  value
-    console.log("Education value:", this.myForm.controls['Education'].value);
+    // console.log("Education value:", this.myForm.controls['Education'].value);
+  }
+
+  togglePredictionResults() {
+    this.showPredictionResults = this.showPredictionResults = true;
   }
 
 }

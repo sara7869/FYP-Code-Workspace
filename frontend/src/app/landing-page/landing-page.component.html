@@ -19,7 +19,6 @@
         <form id="myForm" [formGroup]="myForm" (ngSubmit)="onPredictClick()">
             <div class="mt-6 flex flex-wrap">
 
-                <!-- Input field to name the prediction -->
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="prediction_name" class="mr-2">Prediction Name</label>
                     <input name="prediction_name" id="prediction_name" formControlName="PredictionName" type="text"
@@ -59,7 +58,7 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="distance_from_home" class="mr-2">Distance From Home</label>
-                    <input name="distance_from_home" id="DistanceFromHome" formControlName="distance_from_home"
+                    <input name="distance_from_home" id="distance_from_home" formControlName="DistanceFromHome"
                         type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
@@ -278,15 +277,14 @@
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="years_at_company" class="mr-2">Years At Company</label>
-                    <input name="years_at_company" id="years_at_company" formControlName="YearsAtCompany"
-                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    <input name="years_at_company" id="years_at_company" formControlName="YearsAtCompany" type="number"
+                        min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
                     <label for="years_in_current_role" class="mr-2">Years In Current Role</label>
-                    <input name="years_in_current_role" id="years_in_current_role"
-                        formControlName="YearsInCurrentRole" type="number" min="0" step="1" max="100"
-                        class="border rounded w-16 px-2 py-1">
+                    <input name="years_in_current_role" id="years_in_current_role" formControlName="YearsInCurrentRole"
+                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="mr-4 bg-slate-200 p-2 rounded">
@@ -304,16 +302,24 @@
                 </div>
 
             </div>
+
+            <div *ngIf="myForm.invalid && myForm.touched" class="text-red-500 text-xs mt-2 font-bold">
+                Please fill out all required fields.
+            </div>
+
         </form>
 
         <div class="mt-6">
+            <!-- <button (click)="onPredictClick()" [disabled]="myForm.invalid"
+                class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button> -->
             <button (click)="onPredictClick()"
                 class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button>
             <button (click)="onCancelClick()"
                 class="px-4 py-2 rounded bg-slate-700 text-white mr-4 font-semibold">Cancel</button>
         </div>
 
-        <div class="mt-6">
+
+        <div id="prediction_results" class="mt-6" *ngIf="showPredictionResults">
             <div class="text-3xl w-full border-b-2">Prediction</div>
             <div class="text-2xl mt-4">Details</div>
 
@@ -323,9 +329,15 @@
             <div>Simple Average:</div>
 
             <div class="text-xl mt-2">DL Ensemble Models</div>
-            <div>Voting:</div>
-            <div>Stacking:</div>
-            <div>Simple Average:</div>
+            <div>{{ this.finalPredictions[3] }}</div>
+            <div>{{ this.finalPredictions[4] }}</div>
+            <div>{{ this.finalPredictions[5] }}</div>
+
+            <div class="text-xl mt-2">Breakdown of Base Model Predictions
+                <div class="text-base">{{ this.finalPredictions[0] }}</div>
+                <div class="text-base">{{ this.finalPredictions[1] }}</div>
+                <div class="text-base">{{ this.finalPredictions[2] }}</div>
+            </div>
 
             <div class="text-2xl mt-4">Result</div>
             <div class="text-xl font-semibold">
