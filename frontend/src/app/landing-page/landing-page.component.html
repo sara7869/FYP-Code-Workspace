@@ -323,20 +323,43 @@
         </div>
 
 
-        <div id="prediction_results" class="mt-6" *ngIf="showPredictionResults">
-            <div class="text-3xl w-full border-b-2">Prediction</div>
+        <div id="prediction_results" class="mt-6 h-fit">
+            <div class="text-3xl w-full border-b-2">Prediction Results</div>
             <div class="text-2xl mt-4">Details</div>
 
             <!-- Base Model Predictions -->
-            <div class="bg-slate-100 p-4 my-4 rounded">
-                <div class="text-xl">Breakdown of Base Model Predictions
-                    <div class="text-base">FNN: {{ this.finalPredictions[0] }}</div>
-                    <div class="text-base">Wide and Deep: {{ this.finalPredictions[1] }}</div>
-                    <div class="text-base">CNN: {{ this.finalPredictions[2] }}</div>
+            <div class="bg-slate-100 p-4 my-4 rounded h-fit" style="height: 23rem;">
+                <div class="text-xl h-fit">
+
+                    Base Model Predictions
+
+                    <div class="flex flex-wrap w-full justify-between h-fit">
+                        <!-- Pie chart for FNN -->
+                        <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                            <div class="text-base font-semibold">FNN</div>
+                            <div class="text-base">{{ this.finalPredictions[0] }}</div>
+                            <canvas id="fnnChart"></canvas>
+                        </div>
+
+                        <!-- Pie chart for Wide and Deep -->
+                        <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                            <div class="text-base font-semibold">Wide and Deep</div>
+                            <div class="text-base">{{ this.finalPredictions[1] }}</div>
+                            <canvas id="wideAndDeepChart"></canvas>
+                        </div>
+
+                        <!-- Pie chart for CNN -->
+                        <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                            <div class="text-base font-semibold">CNN</div>
+                            <div class="text-base">{{ this.finalPredictions[2] }}</div>
+                            <canvas id="cnnChart"></canvas>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-slate-100 p-4 my-4 rounded">
+            <!-- <div class="bg-slate-100 p-4 my-4 rounded">
                 <div class="text-xl">ML Ensemble models</div>
                 <div class="flex flex-wrap w-full">
                     <div class="w-1/3 text-center">
@@ -352,11 +375,35 @@
                         <div>0.124</div>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="bg-slate-100 p-4 my-4 rounded" style="height: 25rem;">
+                <div class="text-xl">DL Ensemble Models</div>
+
+                <label for="ensembleTechnique" class="mr-2">Ensemble Technique: </label>
+                <select [(ngModel)]="selectedEnsembleTechnique" (change)="onEnsembleTechniqueChange($event)">
+                    <option value="Stacking">Stacking</option>
+                    <option value="Voting">Voting</option>
+                    <option value="Simple Average">Simple Average</option>
+                </select>
+
+                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                    <!-- Display predictions for Stacking -->
+                    <div class="text-base font-semibold">{{selectedEnsembleTechnique}}</div>
+
+                    <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Stacking'">{{ this.finalPredictions[3]
+                        }}</div>
+                    <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Simple Average'">{{
+                        this.finalPredictions[4] }}</div>
+                    <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Voting'">{{ this.finalPredictions[5] }}
+                    </div>
+
+                    <canvas id="ensembleChart"></canvas>
+                </div>
             </div>
 
-            <div class="bg-slate-100 p-4 my-4 rounded">
-                <div class="text-xl">DL Ensemble Models</div>
-                <div class="flex flex-wrap w-full">
+
+            <!-- <div class="flex flex-wrap w-full">
                     <div class="w-1/3 text-center">
                         <div class="font-semibold">Stacking</div>
                         <div>{{ this.finalPredictions[3] }}</div>
@@ -369,21 +416,25 @@
                         <div class="font-semibold">Voting</div>
                         <div>{{ this.finalPredictions[5] }}</div>
                     </div>
-                </div>
-            </div>
+                </div> -->
+        </div>
 
-            <div class="text-center mb-10">
-                <div class="text-2xl mt-4">Result</div>
-                <div class="text-xl font-semibold">
-                    Yes
-                </div>
+        <div class="text-center mb-10">
+            <div class="text-2xl mt-4">Result</div>
+            <div class="text-xl font-semibold">
+                <!-- Display the result based on the selected ensemble technique -->
+                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
+                    {{ finalPredictions[3] > 0.5 ? 'Yes' : 'No' }}
+                </ng-container>
+                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
+                    {{ finalPredictions[4] > 0.5 ? 'Yes' : 'No' }}
+                </ng-container>
+                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
+                    {{ finalPredictions[5] > 0.5 ? 'Yes' : 'No' }}
+                </ng-container>
             </div>
-
         </div>
 
     </div>
-</div>
 
-<!-- The form values will be sent to the flask backend for prediction -->
-<!-- The backend will return the prediction result -->
-<!-- The prediction result will be displayed in the "Result" section -->
+</div>

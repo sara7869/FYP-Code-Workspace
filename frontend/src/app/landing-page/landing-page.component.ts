@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { Chart, PieController, ArcElement, CategoryScale, Title, Tooltip, Legend, LinearScale } from 'chart.js';
+import { registerables } from 'chart.js';
 
 @Component({
   selector: 'app-landing-page',
@@ -20,6 +22,7 @@ import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common
 export class LandingPageComponent implements OnInit {
 
   showPredictionResults = false;
+  selectedEnsembleTechnique: string = 'Stacking'; // Default value
 
   myForm = this.formBuilder.group({
     // PredictionName: new FormControl('', Validators.required),
@@ -137,6 +140,16 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
     // TODO: Get list of past predictions
     console.log("Page initialized");
+    Chart.register(
+      PieController,
+      ArcElement,
+      CategoryScale,
+      Title,
+      Tooltip,
+      Legend,
+      LinearScale
+    );
+
   }
 
   onCancelClick(): void {
@@ -222,14 +235,99 @@ export class LandingPageComponent implements OnInit {
     this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any) => {
       this.finalPredictions = data.predictions;
       console.log(this.finalPredictions);
+      this.initializeCharts(this.finalPredictions);
     });
 
     this.togglePredictionResults();
+
+    // initializeCharts has to happen after the prediction results are available
+
+
+  }
+
+  initializeCharts(predictions: any) {
+    const ctxFnn = document.getElementById('fnnChart');
+    const ctxWideAndDeep = document.getElementById('wideAndDeepChart');
+    const ctxCnn = document.getElementById('cnnChart');
+    const ctxEnsemble = document.getElementById('ensembleChart');
+
+    // Assuming you have the prediction results in this.finalPredictions
+    const fnnPrediction = parseFloat(predictions[0]);
+    const wideAndDeepPrediction = predictions[1];
+    const cnnPrediction = predictions[2];
+    const ensemblePrediction = predictions[3];
+
+    console.log(predictions)
+
+    console.log('fnnPrediction:', fnnPrediction);
+    console.log('wideAndDeepPrediction:', wideAndDeepPrediction);
+    console.log('cnnPrediction:', cnnPrediction);
+    console.log('ensemblePrediction:', ensemblePrediction);
+
+    // Create the pie charts
+    this.createPieChart(ctxFnn, fnnPrediction);
+    this.createPieChart(ctxWideAndDeep, wideAndDeepPrediction);
+    this.createPieChart(ctxCnn, cnnPrediction);
+    this.createPieChart(ctxEnsemble, ensemblePrediction);
+  }
+
+  createPieChart(ctx: HTMLElement | null, prediction: any) {
+    if (!ctx) {
+      return; // Return early if ctx is null
+    }
+    else {
+      new Chart(ctx as HTMLCanvasElement, {
+        type: 'pie',
+        data: {
+          labels: ['No', 'Yes'],
+          datasets: [{
+            label: 'Prediction',
+            data: [1 - prediction, prediction],
+            backgroundColor: [
+              // green, black
+              'rgba(75,192,192,1)',
+              'rgba(0,0,0,1)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // scales: {
+          //   y: {
+          //     beginAtZero: true
+          //   }
+          // }
+        }
+      });
+    }
+
   }
 
   togglePredictionResults() {
     this.showPredictionResults = this.showPredictionResults = true;
   }
 
+  onEnsembleTechniqueChange(event: any): void {
+    this.selectedEnsembleTechnique = event.target.value;
+    // You can add additional logic here if needed
+    console.log(this.finalPredictions);
+    // create pie chart for the selected ensemble technique
+    switch (this.selectedEnsembleTechnique) {
+      case 'Stacking':
+        this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[3]);
+        break;
+      case 'Voting':
+        this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[4]);
+        break;
+      case 'Simple Average':
+        this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[5]);
+        break;
+    }
+  }
 }
-
