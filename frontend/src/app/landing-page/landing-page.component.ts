@@ -102,7 +102,7 @@ export class LandingPageComponent implements OnInit {
 
   selectedJobRole: string = '';
 
-  predictionsList: any[] = [];
+  predictionsList: { prediction_name: string; timestamp: string; input_data: any; prediction_result: any }[] = [];
 
   finalPredictions: any = {};
 
@@ -122,7 +122,7 @@ export class LandingPageComponent implements OnInit {
       })
       .then(data => {
         // Handle the data from the response
-        this.predictionsList = data.map((prediction: any) => {
+        this.predictionsList = data.map((prediction: { prediction_name: string; timestamp: string; input_data: any; prediction_result: any }) => {
           return {
             prediction_name: prediction.prediction_name,
             timestamp: new Date(prediction.timestamp).toLocaleString(),
@@ -158,9 +158,10 @@ export class LandingPageComponent implements OnInit {
   }
 
   // When job role is selected, set job level accordingly
-  onJobRoleSelected(event: any): void {
+  onJobRoleSelected(event: Event): void {
     // select job level element and assign value
-    this.selectedJobRole = event.target.value;
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedJobRole = selectElement.value;
     console.log("Selected job role:", this.selectedJobRole);
 
     // Define a mapping of job roles to job levels
@@ -192,7 +193,7 @@ export class LandingPageComponent implements OnInit {
     //   return;
     // }
     // TODO: Implement contacting flask API endpoint through an Angular service class
-    let myFormConverted = {
+    const myFormConverted = {
       PredictionName: this.myForm.value.PredictionName,
       Age: Number(this.myForm.value.Age),
       BusinessTravel: this.myForm.value.BusinessTravel,
@@ -232,7 +233,7 @@ export class LandingPageComponent implements OnInit {
 
     console.log("myformConverted: ", myFormConverted);
 
-    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any) => {
+    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any ) => {
       this.finalPredictions = data.predictions;
       console.log(this.finalPredictions);
       this.initializeCharts(this.finalPredictions);
@@ -245,14 +246,14 @@ export class LandingPageComponent implements OnInit {
 
   }
 
-  initializeCharts(predictions: any) {
+  initializeCharts(predictions: number[]) {
     const ctxFnn = document.getElementById('fnnChart');
     const ctxWideAndDeep = document.getElementById('wideAndDeepChart');
     const ctxCnn = document.getElementById('cnnChart');
     const ctxEnsemble = document.getElementById('ensembleChart');
 
     // Assuming you have the prediction results in this.finalPredictions
-    const fnnPrediction = parseFloat(predictions[0]);
+    const fnnPrediction = predictions[0];
     const wideAndDeepPrediction = predictions[1];
     const cnnPrediction = predictions[2];
     const ensemblePrediction = predictions[3];
@@ -271,7 +272,7 @@ export class LandingPageComponent implements OnInit {
     this.createPieChart(ctxEnsemble, ensemblePrediction);
   }
 
-  createPieChart(ctx: HTMLElement | null, prediction: any) {
+  createPieChart(ctx: HTMLElement | null, prediction: number) {
     if (!ctx) {
       return; // Return early if ctx is null
     }
@@ -313,8 +314,9 @@ export class LandingPageComponent implements OnInit {
     this.showPredictionResults = this.showPredictionResults = true;
   }
 
-  onEnsembleTechniqueChange(event: any): void {
-    this.selectedEnsembleTechnique = event.target.value;
+  onEnsembleTechniqueChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedEnsembleTechnique = selectElement.value;
     // You can add additional logic here if needed
     console.log(this.finalPredictions);
     // create pie chart for the selected ensemble technique
