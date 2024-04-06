@@ -31,7 +31,7 @@
 
                 <div class="field">
                     <label for="age" class="mr-2">Age</label>
-                    <input name="age" id="age" formControlName="Age" type="number" min="18" step="1" max="120"
+                    <input name="age" id="age" formControlName="Age" type="number" min="18" step="1" max="100"
                         class="border rounded w-16 px-2 py-1">
                 </div>
 
@@ -181,13 +181,13 @@
                 <div class="field">
                     <label for="monthly_income" class="mr-2">Monthly Income</label>
                     <input name="monthly_income" id="monthly_income" formControlName="MonthlyIncome" type="number"
-                        min="0" step="1" max="100000" class="border rounded w-16 px-2 py-1">
+                        min="0" step="1" max="20000" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="field">
                     <label for="monthly_rate" class="mr-2">Monthly Rate</label>
                     <input name="monthly_rate" id="monthly_rate" formControlName="MonthlyRate" type="number" min="0"
-                        step="1" max="100000" class="border rounded w-16 px-2 py-1">
+                        step="1" max="30000" class="border rounded w-16 px-2 py-1">
                 </div>
 
                 <div class="field">
@@ -222,8 +222,10 @@
                     <label for="performance_rating" class="mr-2">Performance Rating</label>
                     <select name="performance_rating" id="performance_rating" formControlName="PerformanceRating"
                         class="rounded px-2 py-1">
-                        <option value="3">3</option>
-                        <option value="4">4</option>
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                        <option value="4">Very High</option>
                     </select>
                 </div>
 
@@ -308,7 +310,7 @@
             </div>
 
             <div *ngIf="myForm.invalid && myForm.touched" class="text-red-500 text-xs mt-2 font-bold">
-                Please fill out all required fields.
+                Please fill out all required fields correctly.
             </div>
 
         </form>
@@ -419,6 +421,21 @@
                 </div> -->
         </div>
 
+        <div>
+            <!-- Display chance of employee resigning as percentage -->
+            <div class="text-2xl mt-4">Chance of Employee Resigning: </div>
+            <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
+                {{ finalPredictions[3] * 100 }}%
+            </ng-container>
+            <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
+                {{ finalPredictions[4] * 100 }}%
+            </ng-container>
+            <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
+                {{ finalPredictions[5] * 100 }}%
+            </ng-container>
+        </div>
+
+
         <div class="text-center mb-10">
             <div class="text-2xl mt-4">Result</div>
             <div class="text-xl font-semibold">
@@ -431,6 +448,55 @@
                 </ng-container>
                 <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
                     {{ finalPredictions[5] > 0.5 ? 'Yes' : 'No' }}
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- Div section to show risk level depe -->
+        <div class="bg-slate-100 p-4 my-4 rounded">
+            <div class="text-xl">Risk Level</div>
+            <div class="text-2xl font-semibold">
+
+                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
+                    <ng-container *ngIf="finalPredictions[3] <= 0.33; else mediumRiskStacking">
+                        Low Risk
+                    </ng-container>
+                    <ng-template #mediumRiskStacking>
+                        <ng-container *ngIf="finalPredictions[3] <= 0.66; else highRiskStacking">
+                            Medium Risk
+                        </ng-container>
+                        <ng-template #highRiskStacking>
+                            High Risk
+                        </ng-template>
+                    </ng-template>
+                </ng-container>
+
+                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
+                    <ng-container *ngIf="finalPredictions[4] <= 0.33; else mediumRiskStacking">
+                        Low Risk
+                    </ng-container>
+                    <ng-template #mediumRiskStacking>
+                        <ng-container *ngIf="finalPredictions[4] <= 0.66; else highRiskStacking">
+                            Medium Risk
+                        </ng-container>
+                        <ng-template #highRiskStacking>
+                            High Risk
+                        </ng-template>
+                    </ng-template>
+                </ng-container>
+
+                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
+                    <ng-container *ngIf="finalPredictions[5] <= 0.33; else mediumRiskStacking">
+                        Low Risk
+                    </ng-container>
+                    <ng-template #mediumRiskStacking>
+                        <ng-container *ngIf="finalPredictions[5] <= 0.66; else highRiskStacking">
+                            Medium Risk
+                        </ng-container>
+                        <ng-template #highRiskStacking>
+                            High Risk
+                        </ng-template>
+                    </ng-template>
                 </ng-container>
             </div>
         </div>
