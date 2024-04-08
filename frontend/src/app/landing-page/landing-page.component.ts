@@ -24,6 +24,20 @@ export class LandingPageComponent implements OnInit {
   showPredictionResults = false;
   selectedEnsembleTechnique: string = 'Stacking'; // Default value
 
+  // Inside your LandingPageComponent class
+  attritionFactors = [
+    { factor: 'Over Time', correlation: 0.25, color: 'red' },
+    { factor: 'Age', correlation: -0.16, color: 'green' },
+    { factor: 'Total Working Years', correlation: -0.17, color: 'green' },
+    { factor: 'Job Level', correlation: -0.17, color: 'green' },
+    { factor: 'Years At Company', correlation: -0.13, color: 'green' },
+    { factor: 'Years In Current Role', correlation: -0.16, color: 'green' },
+    { factor: 'Years With Current Manager', correlation: -0.16, color: 'green' },
+    { factor: 'Business Travel', correlation: 0.000074, color: 'green' },
+    { factor: 'Distance From Home', correlation: 0.078, color: 'green' },
+    { factor: 'Stock Option Level', correlation: -0.14, color: 'red' },
+  ];
+
   myForm = this.formBuilder.group({
     // PredictionName: new FormControl('', Validators.required),
     // Age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(120)]),
@@ -271,7 +285,7 @@ export class LandingPageComponent implements OnInit {
 
     console.log("myformConverted: ", myFormConverted);
 
-    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any ) => {
+    this.http.post('http://localhost:5000/predict', myFormConverted).subscribe((data: any) => {
       this.finalPredictions = data.predictions;
       console.log(this.finalPredictions);
       this.initializeCharts(this.finalPredictions);

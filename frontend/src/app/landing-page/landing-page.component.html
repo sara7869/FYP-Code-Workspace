@@ -501,6 +501,24 @@
             </div>
         </div>
 
+        <div class="bg-slate-100 p-4 my-4 rounded">
+            <div class="text-xl">Top Contributing Factors</div>
+            <table class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Factor</th>
+                        <th class="px-4 py-2">Correlation Coefficient</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let factor of attritionFactors">
+                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.factor }}</td>
+                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.correlation }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
 </div>
