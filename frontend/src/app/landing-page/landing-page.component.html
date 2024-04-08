@@ -1,31 +1,21 @@
 <div class="w-screen h-screen flex flex-wrap content-start">
-    <div class="w-full h-14 flex items-center p-2 bg-gradient-to-r from-green-400 to-blue-400">
-        <div class="text-3xl font-semibold text-slate-800">AttritionPro</div>
+    <div class="w-full h-14 flex items-center p-2" style="background-color: rgba(75,192,192,1);">
+        <div class="text-3xl font-semibold text-black" style="margin-left: 1.5rem;">AttritionPro</div>
     </div>
 
     <div class="flex flex-col md:flex-row">
         <!-- Sidebar - History -->
         <div class="md:w-1/6 p-4 bg-slate-200">
+            <div class="text-xl ml-6">Prediction History</div>
             <div *ngFor="let prediction of predictionsList"
-                class="mb-2 rounded hover:bg-slate-300 px-2 py-1 cursor-pointer">
+                class="mt-2 mb-2 rounded hover:bg-slate-300 px-2 py-1 ml-4 cursor-pointer">
                 <div>{{prediction?.prediction_name}}</div>
-                <div class="text-xs text-slate-500">{{ prediction?.timestamp }}</div>
-                <button (click)="loadPredictionIntoForm(prediction)" class="text-blue-500 hover:text-blue-700">Load into
+                <div class="text-xs text-slate-700">{{ prediction?.timestamp }}</div>
+                <button (click)="loadPredictionIntoForm(prediction)" 
+                    style="color: rgb(41, 105, 105);">Load into
                     Form</button>
             </div>
         </div>
-        <!-- Sidebar - History -->
-        <!-- <div class="w-64 border-r-2 border-slate-400 p-4" style="height: calc(100vh - 3.5rem);">
-        <div *ngFor="let prediction of predictionsList"
-            class="mb-2 rounded bg-slate-200 hover:bg-slate-300 px-2 py-1 cursor-pointer">
-
-            <div>{{prediction?.prediction_name}}</div>
-            <div class="text-xs text-slate-500">{{ prediction?.timestamp }}</div>
-            <button (click)="loadPredictionIntoForm(prediction)" class="text-blue-500 hover:text-blue-700">Load into
-                Form</button>
-
-        </div>
-    </div> -->
 
         <!-- Page content -->
         <div class=" p-4" style="width: calc(100vw - 14rem);">
@@ -52,7 +42,7 @@
 
                     <div class="field">
                         <label for="business_travel" class="mr-2">Business Travel</label>
-                        <select name="business_travel" id="BusinessTravel" formControlName="BusinessTravel"
+                        <select name="business_travel" id="business_travel" formControlName="BusinessTravel"
                             class="rounded px-2 py-1">
                             <option value="Travel_Rarely">Travel Rarely</option>
                             <option value="Travel_Frequently">Travel Frequently</option>
@@ -337,10 +327,10 @@
             <div class="mt-6">
                 <!-- <button (click)="onPredictClick()" [disabled]="myForm.invalid"
                 class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button> -->
-                <button (click)="onPredictClick()"
-                    class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button>
+                <button (click)="onPredictClick()" class="px-4 py-2 rounded  mr-4 font-semibold"
+                    style="background-color: rgba(75,192,192,1);">Predict</button>
                 <button (click)="onCancelClick()"
-                    class="px-4 py-2 rounded bg-slate-700 text-white mr-4 font-semibold">Cancel</button>
+                    class="px-4 py-2 rounded bg-black text-white mr-4 font-semibold">Cancel</button>
             </div>
 
 
@@ -368,14 +358,14 @@
                                 <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">Wide and Deep</div>
                                     <div class="text-base">{{ this.finalPredictions[1] }}</div>
-                                    <canvas class="mt-4" id="wideAndDeepChart" ></canvas>
+                                    <canvas class="mt-4" id="wideAndDeepChart"></canvas>
                                 </div>
 
                                 <!-- Pie chart for CNN -->
-                                <div class="w-full md:w-1/3 text-center mt-8" >
+                                <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">CNN</div>
                                     <div class="text-base">{{ this.finalPredictions[2] }}</div>
-                                    <canvas class="mt-4" id="cnnChart" ></canvas>
+                                    <canvas class="mt-4" id="cnnChart"></canvas>
                                 </div>
 
                             </div>
@@ -386,7 +376,7 @@
                         <div class="text-xl">Ensemble Predictions</div>
                         <div class="mt-8">
                             <label for="ensembleTechnique" class="mr-2">Ensemble Technique: </label>
-                            <select [(ngModel)]="selectedEnsembleTechnique"
+                            <select name="ensembleTechnique" id="ensembleTechnique" [(ngModel)]="selectedEnsembleTechnique"
                                 (change)="onEnsembleTechniqueChange($event)">
                                 <option value="Stacking">Stacking</option>
                                 <option value="Voting">Voting</option>
@@ -417,25 +407,25 @@
                 <div id="prediction_analysis" style="height: 58rem;">
                     <div class="text-2xl mt-4">Analysis</div>
                     <div class="bg-slate-100">
-                        <div class="p-4 my-4 rounded h-fit">
-                            <div class="text-2xl mt-4">Chance of Employee Resigning: </div>
-                            <div *ngIf="predictionMade">
+                        <div class="flex p-4 my-4 rounded h-fit">
+                            <div class="text-xl mt-4">Chance of Employee Resigning: </div>
+                            <div class="text-xl font-semibold ml-8 mt-4" *ngIf="predictionMade">
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                                    {{ finalPredictions[3] * 100 }}%
+                                    {{ finalPredictions[3] * 100 | number:'1.2-2' }}%
                                 </ng-container>
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                                    {{ finalPredictions[4] * 100 }}%
+                                    {{ finalPredictions[4] * 100 | number:'1.2-2' }}%
                                 </ng-container>
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
-                                    {{ finalPredictions[5] * 100 }}%
+                                    {{ finalPredictions[5] * 100 | number:'1.2-2' }}%
                                 </ng-container>
                             </div>
                         </div>
 
 
-                        <div class="text-center mb-10 p-4 my-4 rounded h-fit">
-                            <div class="text-2xl mt-4">Result</div>
-                            <div class="text-xl font-semibold" *ngIf="predictionMade">
+                        <div class="flex mb-10 p-4 my-4 rounded h-fit">
+                            <div class="text-xl mt-4">Result:</div>
+                            <div class="text-xl mt-4 ml-8 font-semibold" *ngIf="predictionMade">
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
                                     {{ finalPredictions[3] > 0.5 ? 'Yes' : 'No' }}
                                 </ng-container>
@@ -448,92 +438,78 @@
                             </div>
                         </div>
 
-                        <div class="p-4 my-4 rounded h-fit">
-                            <div class="text-xl">Risk Level</div>
-                            <div class="text-2xl font-semibold" *ngIf="predictionMade">
-
+                        <div class="flex p-4 my-4 rounded h-fit">
+                            <div class="text-xl">Risk Level: </div>
+                            <div class="text-xl font-semibold ml-8" *ngIf="predictionMade">
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                                    <ng-container *ngIf="finalPredictions[3] <= 0.33; else mediumRiskStacking">
-                                        Low Risk
-                                    </ng-container>
-                                    <ng-template #mediumRiskStacking>
-                                        <ng-container *ngIf="finalPredictions[3] <= 0.66; else highRiskStacking">
-                                            Medium Risk
-                                        </ng-container>
-                                        <ng-template #highRiskStacking>
-                                            High Risk
-                                        </ng-template>
-                                    </ng-template>
+                                    <span [ngClass]="{
+                                        'risk-label low-risk': finalPredictions[3] <= 0.33,
+                                        'risk-label medium-risk': finalPredictions[3] > 0.33 && finalPredictions[3] <= 0.66,
+                                        'risk-label high-risk': finalPredictions[3] > 0.66
+                                    }">
+                                        {{ finalPredictions[3] <= 0.33 ? 'Low Risk' : finalPredictions[3] <=0.66
+                                            ? 'Medium Risk' : 'High Risk' }} </span>
                                 </ng-container>
 
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                                    <ng-container *ngIf="finalPredictions[4] <= 0.33; else mediumRiskStacking">
-                                        Low Risk
-                                    </ng-container>
-                                    <ng-template #mediumRiskStacking>
-                                        <ng-container *ngIf="finalPredictions[4] <= 0.66; else highRiskStacking">
-                                            Medium Risk
-                                        </ng-container>
-                                        <ng-template #highRiskStacking>
-                                            High Risk
-                                        </ng-template>
-                                    </ng-template>
+                                    <span [ngClass]="{
+                                        'risk-label low-risk': finalPredictions[4] <= 0.33,
+                                        'risk-label medium-risk': finalPredictions[4] > 0.33 && finalPredictions[4] <= 0.66,
+                                        'risk-label high-risk': finalPredictions[4] > 0.66
+                                    }">
+                                        {{ finalPredictions[4] <= 0.33 ? 'Low Risk' : finalPredictions[4] <=0.66
+                                            ? 'Medium Risk' : 'High Risk' }} </span>
                                 </ng-container>
 
                                 <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
-                                    <ng-container *ngIf="finalPredictions[5] <= 0.33; else mediumRiskStacking">
-                                        Low Risk
-                                    </ng-container>
-                                    <ng-template #mediumRiskStacking>
-                                        <ng-container *ngIf="finalPredictions[5] <= 0.66; else highRiskStacking">
-                                            Medium Risk
-                                        </ng-container>
-                                        <ng-template #highRiskStacking>
-                                            High Risk
-                                        </ng-template>
-                                    </ng-template>
+                                    <span [ngClass]="{
+                                        'risk-label low-risk': finalPredictions[5] <= 0.33,
+                                        'risk-label medium-risk': finalPredictions[5] > 0.33 && finalPredictions[5] <= 0.66,
+                                        'risk-label high-risk': finalPredictions[5] > 0.66
+                                    }">
+                                        {{ finalPredictions[5] <= 0.33 ? 'Low Risk' : finalPredictions[5] <=0.66
+                                            ? 'Medium Risk' : 'High Risk' }} </span>
                                 </ng-container>
                             </div>
                         </div>
-
-                        <div class="bg-slate-100 p-4 my-4 rounded">
-                            <div class="text-xl">Top Contributing Factors</div>
-                            <table class="table-auto w-full" *ngIf="predictionMade">
-                                <thead>
-                                    <tr>
-                                        <th class="px-4 py-2">Factor</th>
-                                        <th class="px-4 py-2">Correlation Coefficient</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let factor of attritionFactors">
-                                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.factor }}
-                                        </td>
-                                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.correlation
-                                            }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
 
+                    <div class="bg-slate-100 p-4 my-4 rounded">
+                        <div class="text-xl">Top Contributing Factors</div>
+                        <table class="table-auto w-full" *ngIf="predictionMade">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Factor</th>
+                                    <th class="px-4 py-2">Correlation Coefficient</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let factor of attritionFactors">
+                                    <td class="border px-4 py-2"
+                                        [style.color]="factor.color === 'green' ? 'rgb(41, 105, 105)' : factor.color === 'red' ? '#B91C1C' : factor.color">
+                                        {{ factor.factor }}</td>
+                                    <td class="border px-4 py-2"
+                                        [style.color]="factor.color === 'green' ? 'rgb(41, 105, 105)' : factor.color === 'red' ? '#B91C1C' : factor.color">
+                                        {{ factor.correlation }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
 
-            <div class="mt-4">
-                <button *ngIf="predictionMade" (click)="saveAndReload()"
-                    class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Save
-                    Prediction</button>
-            </div>
-
         </div>
 
-
-
+        <div class="mt-4">
+            <button *ngIf="predictionMade" (click)="saveAndReload()" class="px-4 py-2 rounded mr-4 font-semibold"
+                style="background-color: rgba(75,192,192,1);">Save
+                Prediction</button>
+        </div>
 
     </div>
 
-
 </div>
+
+
+<!-- </div> -->

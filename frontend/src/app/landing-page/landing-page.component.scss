@@ -38,3 +38,25 @@ canvas {
     max-width: 260px;
     max-height: 240px;
 }
+
+.risk-label {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.low-risk {
+    background-color: #7bd29f;
+    color: #34445b;
+}
+
+.medium-risk {
+    color: #973f00;
+    background-color: #ffcb90;
+}
+
+.high-risk {
+    background-color: #FCA5A5;
+    color: #B91C1C;
+}

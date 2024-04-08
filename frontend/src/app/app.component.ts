@@ -10,5 +10,5 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'Hello, frontend';
 }
