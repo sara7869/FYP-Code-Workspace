@@ -22,7 +22,8 @@ import { registerables } from 'chart.js';
 export class LandingPageComponent implements OnInit {
 
   showPredictionResults = false;
-  selectedEnsembleTechnique: string = 'Stacking'; // Default value
+  selectedEnsembleTechnique: string = 'Stacking';
+  predictionMade: boolean = false;
 
   // Inside your LandingPageComponent class
   attritionFactors = [
@@ -294,8 +295,7 @@ export class LandingPageComponent implements OnInit {
     this.togglePredictionResults();
 
     // initializeCharts has to happen after the prediction results are available
-
-
+    this.predictionMade = true;
   }
 
   initializeCharts(predictions: number[]) {
@@ -338,12 +338,12 @@ export class LandingPageComponent implements OnInit {
             data: [1 - prediction, prediction],
             backgroundColor: [
               // green, black
-              'rgba(75,192,192,1)',
-              'rgba(0,0,0,1)'
+              'rgba(0,0,0,1)',
+              'rgba(75,192,192,1)'
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)'
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 99, 132, 1)'
             ],
             borderWidth: 0
           }]
@@ -383,5 +383,29 @@ export class LandingPageComponent implements OnInit {
         this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[5]);
         break;
     }
+  }
+
+  // Inside your LandingPageComponent class
+
+  loadPredictionIntoForm(prediction: any): void {
+    let inputDataString = prediction.input_data;
+    console.log('Input data string:', inputDataString);
+    if (!inputDataString || inputDataString.trim() === '') {
+      alert('No input data available for this prediction.');
+      return;
+    }
+    inputDataString = inputDataString.replace(/'/g, '"');
+    try {
+      const inputData = JSON.parse(inputDataString);
+      this.myForm.patchValue(inputData);
+      alert('Prediction values loaded into the form.');
+    } catch (error) {
+      console.error('Error parsing input data:', error);
+      alert('Error loading prediction values into the form.');
+    }
+  }
+
+  saveAndReload(): void {
+    location.reload();
   }
 }

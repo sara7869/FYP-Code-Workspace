@@ -3,522 +3,537 @@
         <div class="text-3xl font-semibold text-slate-800">AttritionPro</div>
     </div>
 
-    <!-- Sidebar - History -->
-    <div class="w-64 border-r-2 border-slate-400 p-4" style="height: calc(100vh - 3.5rem);">
+    <div class="flex flex-col md:flex-row">
+        <!-- Sidebar - History -->
+        <div class="md:w-1/6 p-4 bg-slate-200">
+            <div *ngFor="let prediction of predictionsList"
+                class="mb-2 rounded hover:bg-slate-300 px-2 py-1 cursor-pointer">
+                <div>{{prediction?.prediction_name}}</div>
+                <div class="text-xs text-slate-500">{{ prediction?.timestamp }}</div>
+                <button (click)="loadPredictionIntoForm(prediction)" class="text-blue-500 hover:text-blue-700">Load into
+                    Form</button>
+            </div>
+        </div>
+        <!-- Sidebar - History -->
+        <!-- <div class="w-64 border-r-2 border-slate-400 p-4" style="height: calc(100vh - 3.5rem);">
         <div *ngFor="let prediction of predictionsList"
             class="mb-2 rounded bg-slate-200 hover:bg-slate-300 px-2 py-1 cursor-pointer">
 
             <div>{{prediction?.prediction_name}}</div>
             <div class="text-xs text-slate-500">{{ prediction?.timestamp }}</div>
+            <button (click)="loadPredictionIntoForm(prediction)" class="text-blue-500 hover:text-blue-700">Load into
+                Form</button>
+
         </div>
-    </div>
+    </div> -->
 
-    <!-- Page content -->
-    <div class="p-4" style="width: calc(100vw - 16rem);">
-        <div class="text-3xl">Enter details</div>
-        <div class="mt-3">
-            Calculate the risk that an employee resigns
-        </div>
-
-        <form id="myForm" [formGroup]="myForm" (ngSubmit)="onPredictClick()">
-            <div class="mt-6 grid grid-cols-3 gap-x-6 gap-y-2 text-sm">
-
-                <div class="field">
-                    <label for="prediction_name" class="mr-2">Prediction Name</label>
-                    <input name="prediction_name" id="prediction_name" formControlName="PredictionName" type="text"
-                        class="border rounded w-64 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="age" class="mr-2">Age</label>
-                    <input name="age" id="age" formControlName="Age" type="number" min="18" step="1" max="100"
-                        class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="business_travel" class="mr-2">Business Travel</label>
-                    <select name="business_travel" id="BusinessTravel" formControlName="BusinessTravel"
-                        class="rounded px-2 py-1">
-                        <option value="Travel_Rarely">Travel Rarely</option>
-                        <option value="Travel_Frequently">Travel Frequently</option>
-                        <option value="Non-Travel">Non-Travel</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="daily_rate" class="mr-2">Daily Rate</label>
-                    <input name="daily_rate" id="daily_rate" formControlName="DailyRate" type="number" min="0" step="1"
-                        max="100000" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="department" class="mr-2">Department</label>
-                    <select name="department" id="department" formControlName="Department" class="rounded px-2 py-1">
-                        <option value="Research & Development">Research & Development</option>
-                        <option value="Human Resources">Human Resources</option>
-                        <option value="Sales">Sales</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="distance_from_home" class="mr-2">Distance From Home</label>
-                    <input name="distance_from_home" id="distance_from_home" formControlName="DistanceFromHome"
-                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="education" class="mr-2">Education</label>
-                    <select name="education" id="education" formControlName="Education" class="rounded px-2 py-1">
-                        <option [value]="1">Below College</option>
-                        <option [value]="2">College</option>
-                        <option [value]="3">Bachelor</option>
-                        <option [value]="4">Master</option>
-                        <option [value]="5">Doctor</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="education_field" class="mr-2">Education Field</label>
-                    <select name="education_field" id="education_field" formControlName="EducationField"
-                        class="rounded px-2 py-1">
-                        <option value="Life Sciences">Life Sciences</option>
-                        <option value="Medical">Medical</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Technical Degree">Technical Degree</option>
-                        <option value="Human Resources">Human Resources</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <!-- Don't show the employee count field -->
-
-                <div class="field">
-                    <label for="employee_number" class="mr-2">Employee Number</label>
-                    <input id="employee_number" name="employee_number" type="number" formControlName="EmployeeNumber"
-                        min="0" step="1" max="100000" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="environment_satisfaction" class="mr-2">Environment Satisfaction</label>
-                    <select name="environment_satisfaction" id="environment_satisfaction"
-                        formControlName="EnvironmentSatisfaction" class="rounded px-2 py-1">
-                        <option value="1">Low</option>
-                        <option value="2">Medium</option>
-                        <option value="3">High</option>
-                        <option value="4">Very High</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="gender" class="mr-2">Gender</label>
-                    <select name="gender" id="gender" formControlName="Gender" class="rounded px-2 py-1">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="hourly_rate" class="mr-2">Hourly Rate</label>
-                    <input name="hourly_rate" id="hourly_rate" formControlName="HourlyRate" type="number" min="0"
-                        step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="job_involvement" class="mr-2">Job Involvement</label>
-                    <select name="job_involvement" id="job_involvement" formControlName="JobInvolvement"
-                        class="rounded px-2 py-1">
-                        <option value="1">Low</option>
-                        <option value="2">Medium</option>
-                        <option value="3">High</option>
-                        <option value="4">Very High</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="job_role" class="mr-2">Job Role</label>
-                    <select name="job_role" id="job_role" formControlName="JobRole" class="rounded px-2 py-1"
-                        [(ngModel)]="selectedJobRole" (change)="onJobRoleSelected($event)">
-                        <option value="Healthcare Representative">Healthcare Representative</option>
-                        <option value="Human Resources">Human Resources</option>
-                        <option value="Laboratory Technician">Laboratory Technician</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Manufacturing Director">Manufacturing Director</option>
-                        <option value="Research Director">Research Director</option>
-                        <option value="Research Scientist">Research Scientist</option>
-                        <option value="Sales Executive">Sales Executive</option>
-                        <option value="Sales Representative">Sales Representative</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="job_level" class="mr-2">Job Level</label>
-                    <input name="job_level" id="job_level" formControlName="JobLevel" type="number" min="1" step="1"
-                        max="5" class="border rounded w-16 px-2 py-1" readonly>
-                </div>
-
-
-                <div class="field">
-                    <label for="job_satisfaction" class="mr-2">Job Satisfaction</label>
-                    <select name="job_satisfaction" id="job_satisfaction" formControlName="JobSatisfaction"
-                        class="rounded px-2 py-1">
-                        <option value="1">Low</option>
-                        <option value="2">Medium</option>
-                        <option value="3">High</option>
-                        <option value="4">Very High</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="marital_status" class="mr-2">Marital Status</label>
-                    <select name="marital_status" id="marital_status" formControlName="MaritalStatus"
-                        class="rounded px-2 py-1">
-                        <option value="Single">Single</option>
-                        <option value="Married">Married</option>
-                        <option value="Divorced">Divorced</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="monthly_income" class="mr-2">Monthly Income</label>
-                    <input name="monthly_income" id="monthly_income" formControlName="MonthlyIncome" type="number"
-                        min="0" step="1" max="20000" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="monthly_rate" class="mr-2">Monthly Rate</label>
-                    <input name="monthly_rate" id="monthly_rate" formControlName="MonthlyRate" type="number" min="0"
-                        step="1" max="30000" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="num_companies_worked" class="mr-2">Num Companies Worked</label>
-                    <input name="num_companies_worked" id="num_companies_worked" formControlName="NumCompaniesWorked"
-                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="over_18" class="mr-2">Over 18</label>
-                    <select name="over_18" id="over_18" formControlName="Over18" class="rounded px-2 py-1">
-                        <option value="Y">Yes</option>
-                        <option value="N">No</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="over_time" class="mr-2">Over Time</label>
-                    <select name="over_time" id="over_time" formControlName="OverTime" class="rounded px-2 py-1">
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="percent_salary_hike" class="mr-2">Percent Salary Hike</label>
-                    <input name="percent_salary_hike" id="percent_salary_hike" formControlName="PercentSalaryHike"
-                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="performance_rating" class="mr-2">Performance Rating</label>
-                    <select name="performance_rating" id="performance_rating" formControlName="PerformanceRating"
-                        class="rounded px-2 py-1">
-                        <option value="1">Low</option>
-                        <option value="2">Medium</option>
-                        <option value="3">High</option>
-                        <option value="4">Very High</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="relationship_satisfaction" class="mr-2">Relationship Satisfaction</label>
-                    <select name="relationship_satisfaction" id="relationship_satisfaction"
-                        formControlName="RelationshipSatisfaction" class="rounded px-2 py-1">
-                        <option value="1">Low</option>
-                        <option value="2">Medium</option>
-                        <option value="3">High</option>
-                        <option value="4">Very High</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="standard_hours" class="mr-2">Standard Hours</label>
-                    <input name="standard_hours" id="standard_hours" formControlName="StandardHours" type="number"
-                        min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="stock_option_level" class="mr-2">Stock Option Level</label>
-                    <select name="stock_option_level" id="stock_option_level" formControlName="StockOptionLevel"
-                        class="rounded px-2 py-1">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="total_working_years" class="mr-2">Total Working Years</label>
-                    <input name="total_working_years" id="total_working_years" formControlName="TotalWorkingYears"
-                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="training_times_last_year" class="mr-2">Training Times Last Year</label>
-                    <input name="training_times_last_year" id="training_times_last_year"
-                        formControlName="TrainingTimesLastYear" type="number" min="0" step="1" max="100"
-                        class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="work_life_balance" class="mr-2">Work Life Balance</label>
-                    <select name="work_life_balance" id="work_life_balance" formControlName="WorkLifeBalance"
-                        class="rounded px-2 py-1">
-                        <option value="1">Bad</option>
-                        <option value="2">Good</option>
-                        <option value="3">Better</option>
-                        <option value="4">Best</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label for="years_at_company" class="mr-2">Years At Company</label>
-                    <input name="years_at_company" id="years_at_company" formControlName="YearsAtCompany" type="number"
-                        min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="years_in_current_role" class="mr-2">Years In Current Role</label>
-                    <input name="years_in_current_role" id="years_in_current_role" formControlName="YearsInCurrentRole"
-                        type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="years_since_last_promotion" class="mr-2">Years Since Last Promotion</label>
-                    <input name="years_since_last_promotion" id="years_since_last_promotion"
-                        formControlName="YearsSinceLastPromotion" type="number" min="0" step="1" max="100"
-                        class="border rounded w-16 px-2 py-1">
-                </div>
-
-                <div class="field">
-                    <label for="years_with_curr_manager" class="mr-2">Years With Current Manager</label>
-                    <input name="years_with_curr_manager" id="years_with_curr_manager"
-                        formControlName="YearsWithCurrManager" type="number" min="0" step="1" max="100"
-                        class="border rounded w-16 px-2 py-1">
-                </div>
-
+        <!-- Page content -->
+        <div class=" p-4" style="width: calc(100vw - 14rem);">
+            <div class="text-3xl">Enter employee details</div>
+            <div class="mt-3">
+                Calculate the risk that an employee resigns.
+                Enter their details to find out.
             </div>
 
-            <div *ngIf="myForm.invalid && myForm.touched" class="text-red-500 text-xs mt-2 font-bold">
-                Please fill out all required fields correctly.
-            </div>
+            <form id="myForm" [formGroup]="myForm" (ngSubmit)="onPredictClick()" class="mt-6">
+                <div class="grid grid-cols-3 md:grid-cols-3 gap-x-6 gap-y-2 text-sm">
 
-        </form>
+                    <div class="field">
+                        <label for="prediction_name" class="mr-2">Prediction Name</label>
+                        <input name="prediction_name" id="prediction_name" formControlName="PredictionName" type="text"
+                            class="border rounded w-full px-2 py-1">
+                    </div>
 
-        <div class="mt-6">
-            <!-- <button (click)="onPredictClick()" [disabled]="myForm.invalid"
+                    <div class="field">
+                        <label for="age" class="mr-2">Age</label>
+                        <input name="age" id="age" formControlName="Age" type="number" min="18" step="1" max="100"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="business_travel" class="mr-2">Business Travel</label>
+                        <select name="business_travel" id="BusinessTravel" formControlName="BusinessTravel"
+                            class="rounded px-2 py-1">
+                            <option value="Travel_Rarely">Travel Rarely</option>
+                            <option value="Travel_Frequently">Travel Frequently</option>
+                            <option value="Non-Travel">Non-Travel</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="daily_rate" class="mr-2">Daily Rate</label>
+                        <input name="daily_rate" id="daily_rate" formControlName="DailyRate" type="number" min="0"
+                            step="1" max="100000" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="department" class="mr-2">Department</label>
+                        <select name="department" id="department" formControlName="Department"
+                            class="rounded px-2 py-1">
+                            <option value="Research & Development">Research & Development</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Sales">Sales</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="distance_from_home" class="mr-2">Distance From Home</label>
+                        <input name="distance_from_home" id="distance_from_home" formControlName="DistanceFromHome"
+                            type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="education" class="mr-2">Education</label>
+                        <select name="education" id="education" formControlName="Education" class="rounded px-2 py-1">
+                            <option [value]="1">Below College</option>
+                            <option [value]="2">College</option>
+                            <option [value]="3">Bachelor</option>
+                            <option [value]="4">Master</option>
+                            <option [value]="5">Doctor</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="education_field" class="mr-2">Education Field</label>
+                        <select name="education_field" id="education_field" formControlName="EducationField"
+                            class="rounded px-2 py-1">
+                            <option value="Life Sciences">Life Sciences</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Technical Degree">Technical Degree</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Don't show the employee count field -->
+
+                    <div class="field">
+                        <label for="employee_number" class="mr-2">Employee Number</label>
+                        <input id="employee_number" name="employee_number" type="number"
+                            formControlName="EmployeeNumber" min="0" step="1" max="100000"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="environment_satisfaction" class="mr-2">Environment Satisfaction</label>
+                        <select name="environment_satisfaction" id="environment_satisfaction"
+                            formControlName="EnvironmentSatisfaction" class="rounded px-2 py-1">
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                            <option value="4">Very High</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="gender" class="mr-2">Gender</label>
+                        <select name="gender" id="gender" formControlName="Gender" class="rounded px-2 py-1">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="hourly_rate" class="mr-2">Hourly Rate</label>
+                        <input name="hourly_rate" id="hourly_rate" formControlName="HourlyRate" type="number" min="0"
+                            step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="job_involvement" class="mr-2">Job Involvement</label>
+                        <select name="job_involvement" id="job_involvement" formControlName="JobInvolvement"
+                            class="rounded px-2 py-1">
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                            <option value="4">Very High</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="job_role" class="mr-2">Job Role</label>
+                        <select name="job_role" id="job_role" formControlName="JobRole" class="rounded px-2 py-1"
+                            [(ngModel)]="selectedJobRole" (change)="onJobRoleSelected($event)">
+                            <option value="Healthcare Representative">Healthcare Representative</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Laboratory Technician">Laboratory Technician</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Manufacturing Director">Manufacturing Director</option>
+                            <option value="Research Director">Research Director</option>
+                            <option value="Research Scientist">Research Scientist</option>
+                            <option value="Sales Executive">Sales Executive</option>
+                            <option value="Sales Representative">Sales Representative</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="job_level" class="mr-2">Job Level</label>
+                        <input name="job_level" id="job_level" formControlName="JobLevel" type="number" min="1" step="1"
+                            max="5" class="border rounded w-16 px-2 py-1" readonly>
+                    </div>
+
+
+                    <div class="field">
+                        <label for="job_satisfaction" class="mr-2">Job Satisfaction</label>
+                        <select name="job_satisfaction" id="job_satisfaction" formControlName="JobSatisfaction"
+                            class="rounded px-2 py-1">
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                            <option value="4">Very High</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="marital_status" class="mr-2">Marital Status</label>
+                        <select name="marital_status" id="marital_status" formControlName="MaritalStatus"
+                            class="rounded px-2 py-1">
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="monthly_income" class="mr-2">Monthly Income</label>
+                        <input name="monthly_income" id="monthly_income" formControlName="MonthlyIncome" type="number"
+                            min="0" step="1" max="20000" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="monthly_rate" class="mr-2">Monthly Rate</label>
+                        <input name="monthly_rate" id="monthly_rate" formControlName="MonthlyRate" type="number" min="0"
+                            step="1" max="30000" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="num_companies_worked" class="mr-2">Num Companies Worked</label>
+                        <input name="num_companies_worked" id="num_companies_worked"
+                            formControlName="NumCompaniesWorked" type="number" min="0" step="1" max="100"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="over_18" class="mr-2">Over 18</label>
+                        <select name="over_18" id="over_18" formControlName="Over18" class="rounded px-2 py-1">
+                            <option value="Y">Yes</option>
+                            <option value="N">No</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="over_time" class="mr-2">Over Time</label>
+                        <select name="over_time" id="over_time" formControlName="OverTime" class="rounded px-2 py-1">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="percent_salary_hike" class="mr-2">Percent Salary Hike</label>
+                        <input name="percent_salary_hike" id="percent_salary_hike" formControlName="PercentSalaryHike"
+                            type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="performance_rating" class="mr-2">Performance Rating</label>
+                        <select name="performance_rating" id="performance_rating" formControlName="PerformanceRating"
+                            class="rounded px-2 py-1">
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                            <option value="4">Very High</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="relationship_satisfaction" class="mr-2">Relationship Satisfaction</label>
+                        <select name="relationship_satisfaction" id="relationship_satisfaction"
+                            formControlName="RelationshipSatisfaction" class="rounded px-2 py-1">
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                            <option value="4">Very High</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="standard_hours" class="mr-2">Standard Hours</label>
+                        <input name="standard_hours" id="standard_hours" formControlName="StandardHours" type="number"
+                            min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="stock_option_level" class="mr-2">Stock Option Level</label>
+                        <select name="stock_option_level" id="stock_option_level" formControlName="StockOptionLevel"
+                            class="rounded px-2 py-1">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="total_working_years" class="mr-2">Total Working Years</label>
+                        <input name="total_working_years" id="total_working_years" formControlName="TotalWorkingYears"
+                            type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="training_times_last_year" class="mr-2">Training Times Last Year</label>
+                        <input name="training_times_last_year" id="training_times_last_year"
+                            formControlName="TrainingTimesLastYear" type="number" min="0" step="1" max="100"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="work_life_balance" class="mr-2">Work Life Balance</label>
+                        <select name="work_life_balance" id="work_life_balance" formControlName="WorkLifeBalance"
+                            class="rounded px-2 py-1">
+                            <option value="1">Bad</option>
+                            <option value="2">Good</option>
+                            <option value="3">Better</option>
+                            <option value="4">Best</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="years_at_company" class="mr-2">Years At Company</label>
+                        <input name="years_at_company" id="years_at_company" formControlName="YearsAtCompany"
+                            type="number" min="0" step="1" max="100" class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="years_in_current_role" class="mr-2">Years In Current Role</label>
+                        <input name="years_in_current_role" id="years_in_current_role"
+                            formControlName="YearsInCurrentRole" type="number" min="0" step="1" max="100"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="years_since_last_promotion" class="mr-2">Years Since Last Promotion</label>
+                        <input name="years_since_last_promotion" id="years_since_last_promotion"
+                            formControlName="YearsSinceLastPromotion" type="number" min="0" step="1" max="100"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                    <div class="field">
+                        <label for="years_with_curr_manager" class="mr-2">Years With Current Manager</label>
+                        <input name="years_with_curr_manager" id="years_with_curr_manager"
+                            formControlName="YearsWithCurrManager" type="number" min="0" step="1" max="100"
+                            class="border rounded w-16 px-2 py-1">
+                    </div>
+
+                </div>
+
+                <div *ngIf="myForm.invalid && myForm.touched" class="text-red-500 text-xs mt-2 font-bold">
+                    Please fill out all required fields correctly.
+                </div>
+
+            </form>
+
+            <div class="mt-6">
+                <!-- <button (click)="onPredictClick()" [disabled]="myForm.invalid"
                 class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button> -->
-            <button (click)="onPredictClick()"
-                class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button>
-            <button (click)="onCancelClick()"
-                class="px-4 py-2 rounded bg-slate-700 text-white mr-4 font-semibold">Cancel</button>
-        </div>
+                <button (click)="onPredictClick()"
+                    class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button>
+                <button (click)="onCancelClick()"
+                    class="px-4 py-2 rounded bg-slate-700 text-white mr-4 font-semibold">Cancel</button>
+            </div>
 
 
-        <div id="prediction_results" class="mt-6 h-fit">
-            <div class="text-3xl w-full border-b-2">Prediction Results</div>
-            <div class="text-2xl mt-4">Details</div>
+            <div id="prediction_results" class="mt-6 h-fit">
+                <div class="text-3xl w-full border-b-2">Prediction Results</div>
+                <div class="text-2xl mt-4">Details</div>
 
-            <!-- Base Model Predictions -->
-            <div class="bg-slate-100 p-4 my-4 rounded h-fit" style="height: 23rem;">
-                <div class="text-xl h-fit">
+                <div id="prediction_details">
 
-                    Base Model Predictions
+                    <!-- Base Model Predictions -->
+                    <div class="bg-slate-100 p-4 my-4 rounded h-fit" style="height: 29rem;">
+                        <div class="text-xl h-fit">
 
-                    <div class="flex flex-wrap w-full justify-between h-fit">
-                        <!-- Pie chart for FNN -->
-                        <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
-                            <div class="text-base font-semibold">FNN</div>
-                            <div class="text-base">{{ this.finalPredictions[0] }}</div>
-                            <canvas id="fnnChart"></canvas>
+                            Base Predictions
+
+                            <div class="flex flex-wrap w-full justify-between h-fit mt-8">
+                                <!-- Pie chart for FNN -->
+                                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                                    <div class="text-base font-semibold">FNN</div>
+                                    <div class="text-base">{{ this.finalPredictions[0] }}</div>
+                                    <canvas class="mt-4" id="fnnChart"></canvas>
+                                </div>
+
+                                <!-- Pie chart for Wide and Deep -->
+                                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                                    <div class="text-base font-semibold">Wide and Deep</div>
+                                    <div class="text-base">{{ this.finalPredictions[1] }}</div>
+                                    <canvas class="mt-4" id="wideAndDeepChart"></canvas>
+                                </div>
+
+                                <!-- Pie chart for CNN -->
+                                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                                    <div class="text-base font-semibold">CNN</div>
+                                    <div class="text-base">{{ this.finalPredictions[2] }}</div>
+                                    <canvas class="mt-4" id="cnnChart"></canvas>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-100 p-4 my-4 rounded" style="height: 30rem;">
+                        <div class="text-xl">Ensemble Predictions</div>
+                        <div class="mt-8">
+                            <label for="ensembleTechnique" class="mr-2">Ensemble Technique: </label>
+                            <select [(ngModel)]="selectedEnsembleTechnique"
+                                (change)="onEnsembleTechniqueChange($event)">
+                                <option value="Stacking">Stacking</option>
+                                <option value="Voting">Voting</option>
+                                <option value="Simple Average">Simple Average</option>
+                            </select>
                         </div>
 
-                        <!-- Pie chart for Wide and Deep -->
-                        <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
-                            <div class="text-base font-semibold">Wide and Deep</div>
-                            <div class="text-base">{{ this.finalPredictions[1] }}</div>
-                            <canvas id="wideAndDeepChart"></canvas>
+                        <div class="w-1/3 text-center mt-8" style="width: 15rem; height: 15rem;">
+                            <!-- Display predictions for Stacking -->
+                            <div class="text-base font-semibold">{{selectedEnsembleTechnique}}</div>
+
+                            <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Stacking'">{{
+                                this.finalPredictions[3]
+                                }}</div>
+                            <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Simple Average'">{{
+                                this.finalPredictions[4] }}</div>
+                            <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Voting'">{{
+                                this.finalPredictions[5] }}
+                            </div>
+
+                            <canvas class="mt-4" id="ensembleChart"></canvas>
                         </div>
 
-                        <!-- Pie chart for CNN -->
-                        <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
-                            <div class="text-base font-semibold">CNN</div>
-                            <div class="text-base">{{ this.finalPredictions[2] }}</div>
-                            <canvas id="cnnChart"></canvas>
-                        </div>
 
                     </div>
                 </div>
-            </div>
 
-            <!-- <div class="bg-slate-100 p-4 my-4 rounded">
-                <div class="text-xl">ML Ensemble models</div>
-                <div class="flex flex-wrap w-full">
-                    <div class="w-1/3 text-center">
-                        <div class="font-semibold">Voting</div>
-                        <div>0.124</div>
+                <div id="prediction_analysis" style="height: 58rem;">
+                    <div class="text-2xl mt-4">Analysis</div>
+                    <div class="bg-slate-100">
+                        <div class="p-4 my-4 rounded h-fit">
+                            <div class="text-2xl mt-4">Chance of Employee Resigning: </div>
+                            <div *ngIf="predictionMade">
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
+                                    {{ finalPredictions[3] * 100 }}%
+                                </ng-container>
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
+                                    {{ finalPredictions[4] * 100 }}%
+                                </ng-container>
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
+                                    {{ finalPredictions[5] * 100 }}%
+                                </ng-container>
+                            </div>
+                        </div>
+
+
+                        <div class="text-center mb-10 p-4 my-4 rounded h-fit">
+                            <div class="text-2xl mt-4">Result</div>
+                            <div class="text-xl font-semibold" *ngIf="predictionMade">
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
+                                    {{ finalPredictions[3] > 0.5 ? 'Yes' : 'No' }}
+                                </ng-container>
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
+                                    {{ finalPredictions[4] > 0.5 ? 'Yes' : 'No' }}
+                                </ng-container>
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
+                                    {{ finalPredictions[5] > 0.5 ? 'Yes' : 'No' }}
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="p-4 my-4 rounded h-fit">
+                            <div class="text-xl">Risk Level</div>
+                            <div class="text-2xl font-semibold" *ngIf="predictionMade">
+
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
+                                    <ng-container *ngIf="finalPredictions[3] <= 0.33; else mediumRiskStacking">
+                                        Low Risk
+                                    </ng-container>
+                                    <ng-template #mediumRiskStacking>
+                                        <ng-container *ngIf="finalPredictions[3] <= 0.66; else highRiskStacking">
+                                            Medium Risk
+                                        </ng-container>
+                                        <ng-template #highRiskStacking>
+                                            High Risk
+                                        </ng-template>
+                                    </ng-template>
+                                </ng-container>
+
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
+                                    <ng-container *ngIf="finalPredictions[4] <= 0.33; else mediumRiskStacking">
+                                        Low Risk
+                                    </ng-container>
+                                    <ng-template #mediumRiskStacking>
+                                        <ng-container *ngIf="finalPredictions[4] <= 0.66; else highRiskStacking">
+                                            Medium Risk
+                                        </ng-container>
+                                        <ng-template #highRiskStacking>
+                                            High Risk
+                                        </ng-template>
+                                    </ng-template>
+                                </ng-container>
+
+                                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
+                                    <ng-container *ngIf="finalPredictions[5] <= 0.33; else mediumRiskStacking">
+                                        Low Risk
+                                    </ng-container>
+                                    <ng-template #mediumRiskStacking>
+                                        <ng-container *ngIf="finalPredictions[5] <= 0.66; else highRiskStacking">
+                                            Medium Risk
+                                        </ng-container>
+                                        <ng-template #highRiskStacking>
+                                            High Risk
+                                        </ng-template>
+                                    </ng-template>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-100 p-4 my-4 rounded">
+                            <div class="text-xl">Top Contributing Factors</div>
+                            <table class="table-auto w-full" *ngIf="predictionMade">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2">Factor</th>
+                                        <th class="px-4 py-2">Correlation Coefficient</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let factor of attritionFactors">
+                                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.factor }}
+                                        </td>
+                                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.correlation
+                                            }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="w-1/3 text-center">
-                        <div class="font-semibold">Stacking</div>
-                        <div>0.124</div>
-                    </div>
-                    <div class="w-1/3 text-center">
-                        <div class="font-semibold">Simple Average</div>
-                        <div>0.124</div>
-                    </div>
+
                 </div>
-            </div> -->
 
-            <div class="bg-slate-100 p-4 my-4 rounded" style="height: 25rem;">
-                <div class="text-xl">DL Ensemble Models</div>
-
-                <label for="ensembleTechnique" class="mr-2">Ensemble Technique: </label>
-                <select [(ngModel)]="selectedEnsembleTechnique" (change)="onEnsembleTechniqueChange($event)">
-                    <option value="Stacking">Stacking</option>
-                    <option value="Voting">Voting</option>
-                    <option value="Simple Average">Simple Average</option>
-                </select>
-
-                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
-                    <!-- Display predictions for Stacking -->
-                    <div class="text-base font-semibold">{{selectedEnsembleTechnique}}</div>
-
-                    <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Stacking'">{{ this.finalPredictions[3]
-                        }}</div>
-                    <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Simple Average'">{{
-                        this.finalPredictions[4] }}</div>
-                    <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Voting'">{{ this.finalPredictions[5] }}
-                    </div>
-
-                    <canvas id="ensembleChart"></canvas>
-                </div>
             </div>
 
-
-            <!-- <div class="flex flex-wrap w-full">
-                    <div class="w-1/3 text-center">
-                        <div class="font-semibold">Stacking</div>
-                        <div>{{ this.finalPredictions[3] }}</div>
-                    </div>
-                    <div class="w-1/3 text-center">
-                        <div class="font-semibold">Simple Average</div>
-                        <div>{{ this.finalPredictions[4] }}</div>
-                    </div>
-                    <div class="w-1/3 text-center">
-                        <div class="font-semibold">Voting</div>
-                        <div>{{ this.finalPredictions[5] }}</div>
-                    </div>
-                </div> -->
-        </div>
-
-        <div>
-            <!-- Display chance of employee resigning as percentage -->
-            <div class="text-2xl mt-4">Chance of Employee Resigning: </div>
-            <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                {{ finalPredictions[3] * 100 }}%
-            </ng-container>
-            <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                {{ finalPredictions[4] * 100 }}%
-            </ng-container>
-            <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
-                {{ finalPredictions[5] * 100 }}%
-            </ng-container>
-        </div>
-
-
-        <div class="text-center mb-10">
-            <div class="text-2xl mt-4">Result</div>
-            <div class="text-xl font-semibold">
-                <!-- Display the result based on the selected ensemble technique -->
-                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                    {{ finalPredictions[3] > 0.5 ? 'Yes' : 'No' }}
-                </ng-container>
-                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                    {{ finalPredictions[4] > 0.5 ? 'Yes' : 'No' }}
-                </ng-container>
-                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
-                    {{ finalPredictions[5] > 0.5 ? 'Yes' : 'No' }}
-                </ng-container>
+            <div class="mt-4">
+                <button *ngIf="predictionMade" (click)="saveAndReload()"
+                    class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Save
+                    Prediction</button>
             </div>
+
         </div>
 
-        <!-- Div section to show risk level depe -->
-        <div class="bg-slate-100 p-4 my-4 rounded">
-            <div class="text-xl">Risk Level</div>
-            <div class="text-2xl font-semibold">
 
-                <ng-container *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                    <ng-container *ngIf="finalPredictions[3] <= 0.33; else mediumRiskStacking">
-                        Low Risk
-                    </ng-container>
-                    <ng-template #mediumRiskStacking>
-                        <ng-container *ngIf="finalPredictions[3] <= 0.66; else highRiskStacking">
-                            Medium Risk
-                        </ng-container>
-                        <ng-template #highRiskStacking>
-                            High Risk
-                        </ng-template>
-                    </ng-template>
-                </ng-container>
 
-                <ng-container *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                    <ng-container *ngIf="finalPredictions[4] <= 0.33; else mediumRiskStacking">
-                        Low Risk
-                    </ng-container>
-                    <ng-template #mediumRiskStacking>
-                        <ng-container *ngIf="finalPredictions[4] <= 0.66; else highRiskStacking">
-                            Medium Risk
-                        </ng-container>
-                        <ng-template #highRiskStacking>
-                            High Risk
-                        </ng-template>
-                    </ng-template>
-                </ng-container>
-
-                <ng-container *ngIf="selectedEnsembleTechnique === 'Voting'">
-                    <ng-container *ngIf="finalPredictions[5] <= 0.33; else mediumRiskStacking">
-                        Low Risk
-                    </ng-container>
-                    <ng-template #mediumRiskStacking>
-                        <ng-container *ngIf="finalPredictions[5] <= 0.66; else highRiskStacking">
-                            Medium Risk
-                        </ng-container>
-                        <ng-template #highRiskStacking>
-                            High Risk
-                        </ng-template>
-                    </ng-template>
-                </ng-container>
-            </div>
-        </div>
-
-        <div class="bg-slate-100 p-4 my-4 rounded">
-            <div class="text-xl">Top Contributing Factors</div>
-            <table class="table-auto w-full">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">Factor</th>
-                        <th class="px-4 py-2">Correlation Coefficient</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let factor of attritionFactors">
-                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.factor }}</td>
-                        <td class="border px-4 py-2" [style.color]="factor.color">{{ factor.correlation }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
     </div>
+
 
 </div>
