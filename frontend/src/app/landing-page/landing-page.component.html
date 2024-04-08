@@ -351,31 +351,31 @@
                 <div id="prediction_details">
 
                     <!-- Base Model Predictions -->
-                    <div class="bg-slate-100 p-4 my-4 rounded h-fit" style="height: 29rem;">
+                    <div class="bg-slate-100 p-4 my-4 rounded h-auto md:h-fit" style="height: auto;">
                         <div class="text-xl h-fit">
 
                             Base Predictions
 
-                            <div class="flex flex-wrap w-full justify-between h-fit mt-8">
+                            <div class="flex flex-wrap justify-between h-fit mb-4">
                                 <!-- Pie chart for FNN -->
-                                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                                <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">FNN</div>
                                     <div class="text-base">{{ this.finalPredictions[0] }}</div>
                                     <canvas class="mt-4" id="fnnChart"></canvas>
                                 </div>
 
                                 <!-- Pie chart for Wide and Deep -->
-                                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                                <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">Wide and Deep</div>
                                     <div class="text-base">{{ this.finalPredictions[1] }}</div>
-                                    <canvas class="mt-4" id="wideAndDeepChart"></canvas>
+                                    <canvas class="mt-4" id="wideAndDeepChart" ></canvas>
                                 </div>
 
                                 <!-- Pie chart for CNN -->
-                                <div class="w-1/3 text-center" style="width: 15rem; height: 15rem;">
+                                <div class="w-full md:w-1/3 text-center mt-8" >
                                     <div class="text-base font-semibold">CNN</div>
                                     <div class="text-base">{{ this.finalPredictions[2] }}</div>
-                                    <canvas class="mt-4" id="cnnChart"></canvas>
+                                    <canvas class="mt-4" id="cnnChart" ></canvas>
                                 </div>
 
                             </div>
