@@ -40,41 +40,41 @@ export class LandingPageComponent implements OnInit {
   ];
 
   myForm = this.formBuilder.group({
-    PredictionName: new FormControl('', Validators.required),
-    Age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(120)]),
-    BusinessTravel: new FormControl('', Validators.required),
-    DailyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
-    Department: new FormControl('', Validators.required),
-    DistanceFromHome: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    Education: new FormControl('', Validators.required),
-    EducationField: new FormControl('', Validators.required),
-    EmployeeCount: new FormControl('1'),
-    EmployeeNumber: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
-    EnvironmentSatisfaction: new FormControl('', Validators.required),
-    Gender: new FormControl('', Validators.required),
-    HourlyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    JobInvolvement: new FormControl('', Validators.required),
-    JobRole: new FormControl('', Validators.required),
-    JobLevel: new FormControl('', [Validators.required, Validators.min(1), Validators.max(5)]),
-    JobSatisfaction: new FormControl('', Validators.required),
-    MaritalStatus: new FormControl('', Validators.required),
-    MonthlyIncome: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
-    MonthlyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
-    NumCompaniesWorked: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    Over18: new FormControl('', Validators.required),
-    OverTime: new FormControl('', Validators.required),
-    PercentSalaryHike: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    PerformanceRating: new FormControl('', Validators.required),
-    RelationshipSatisfaction: new FormControl('', Validators.required),
-    StandardHours: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    StockOptionLevel: new FormControl('', Validators.required),
-    TotalWorkingYears: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    TrainingTimesLastYear: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    WorkLifeBalance: new FormControl('', Validators.required),
-    YearsAtCompany: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    YearsInCurrentRole: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    YearsSinceLastPromotion: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
-    YearsWithCurrManager: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)])
+    // PredictionName: new FormControl('', Validators.required),
+    // Age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(120)]),
+    // BusinessTravel: new FormControl('', Validators.required),
+    // DailyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // Department: new FormControl('', Validators.required),
+    // DistanceFromHome: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // Education: new FormControl('', Validators.required),
+    // EducationField: new FormControl('', Validators.required),
+    // EmployeeCount: new FormControl('1'),
+    // EmployeeNumber: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // EnvironmentSatisfaction: new FormControl('', Validators.required),
+    // Gender: new FormControl('', Validators.required),
+    // HourlyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // JobInvolvement: new FormControl('', Validators.required),
+    // JobRole: new FormControl('', Validators.required),
+    // JobLevel: new FormControl('', [Validators.required, Validators.min(1), Validators.max(5)]),
+    // JobSatisfaction: new FormControl('', Validators.required),
+    // MaritalStatus: new FormControl('', Validators.required),
+    // MonthlyIncome: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // MonthlyRate: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+    // NumCompaniesWorked: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // Over18: new FormControl('', Validators.required),
+    // OverTime: new FormControl('', Validators.required),
+    // PercentSalaryHike: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // PerformanceRating: new FormControl('', Validators.required),
+    // RelationshipSatisfaction: new FormControl('', Validators.required),
+    // StandardHours: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // StockOptionLevel: new FormControl('', Validators.required),
+    // TotalWorkingYears: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // TrainingTimesLastYear: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // WorkLifeBalance: new FormControl('', Validators.required),
+    // YearsAtCompany: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // YearsInCurrentRole: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // YearsSinceLastPromotion: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    // YearsWithCurrManager: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)])
 
     // For easy testing, we can pre-populate the form with some values
     // PredictionName: 'gfhddfh Prediction',
@@ -114,42 +114,42 @@ export class LandingPageComponent implements OnInit {
     // YearsWithCurrManager: '0'
 
     // Positive prediction
-    // PredictionName: 'John Smith',
-    // Age: '19',
-    // BusinessTravel: 'Travel_Frequently',
-    // DailyRate: '12',
-    // Department: 'Human Resources',
-    // DistanceFromHome: '0',
-    // Education: '4',
-    // EducationField: 'Marketing',
-    // EmployeeCount: '1',
-    // EmployeeNumber: '46564',
-    // EnvironmentSatisfaction: '0',
-    // Gender: 'Female',
-    // HourlyRate: '12',
-    // JobInvolvement: '2',
-    // JobLevel: '3',
-    // // JobRole: 'Manager',
-    // JobRole: 'Healthcare Representative',
-    // JobSatisfaction: '3',
-    // MaritalStatus: 'Single',
-    // MonthlyIncome: '122',
-    // MonthlyRate: '452',
-    // NumCompaniesWorked: '2',
-    // Over18: 'Y',
-    // OverTime: 'No',
-    // PercentSalaryHike: '12',
-    // PerformanceRating: '3',
-    // RelationshipSatisfaction: '2',
-    // StandardHours: '9',
-    // StockOptionLevel: '1',
-    // TotalWorkingYears: '9',
-    // TrainingTimesLastYear: '4',
-    // WorkLifeBalance: '2',
-    // YearsAtCompany: '3',
-    // YearsInCurrentRole: '1',
-    // YearsSinceLastPromotion: '1',
-    // YearsWithCurrManager: '2'
+    PredictionName: 'John Smith',
+    Age: '19',
+    BusinessTravel: 'Travel_Frequently',
+    DailyRate: '12',
+    Department: 'Human Resources',
+    DistanceFromHome: '0',
+    Education: '4',
+    EducationField: 'Marketing',
+    EmployeeCount: '1',
+    EmployeeNumber: '46564',
+    EnvironmentSatisfaction: '0',
+    Gender: 'Female',
+    HourlyRate: '12',
+    JobInvolvement: '2',
+    JobLevel: '3',
+    // JobRole: 'Manager',
+    JobRole: 'Healthcare Representative',
+    JobSatisfaction: '3',
+    MaritalStatus: 'Single',
+    MonthlyIncome: '122',
+    MonthlyRate: '452',
+    NumCompaniesWorked: '2',
+    Over18: 'Y',
+    OverTime: 'No',
+    PercentSalaryHike: '12',
+    PerformanceRating: '3',
+    RelationshipSatisfaction: '2',
+    StandardHours: '9',
+    StockOptionLevel: '1',
+    TotalWorkingYears: '9',
+    TrainingTimesLastYear: '4',
+    WorkLifeBalance: '2',
+    YearsAtCompany: '3',
+    YearsInCurrentRole: '1',
+    YearsSinceLastPromotion: '1',
+    YearsWithCurrManager: '2'
 
   });
 
@@ -302,26 +302,35 @@ export class LandingPageComponent implements OnInit {
     const ctxFnn = document.getElementById('fnnChart');
     const ctxWideAndDeep = document.getElementById('wideAndDeepChart');
     const ctxCnn = document.getElementById('cnnChart');
-    const ctxEnsemble = document.getElementById('ensembleChart');
+    const ctxStacking = document.getElementById('stackingChart');
+    const ctxVoting = document.getElementById('votingChart');
+    const ctxSimpleAverage = document.getElementById('simpleAverageChart');
+
 
     // Assuming you have the prediction results in this.finalPredictions
     const fnnPrediction = predictions[0];
     const wideAndDeepPrediction = predictions[1];
     const cnnPrediction = predictions[2];
-    const ensemblePrediction = predictions[3];
+    const stackingPrediction = predictions[3];
+    const votingPrediction = predictions[4];
+    const simpleAveragePrediction = predictions[5];
 
     console.log(predictions)
 
     console.log('fnnPrediction:', fnnPrediction);
     console.log('wideAndDeepPrediction:', wideAndDeepPrediction);
     console.log('cnnPrediction:', cnnPrediction);
-    console.log('ensemblePrediction:', ensemblePrediction);
+    console.log('stackingPrediction:', stackingPrediction);
+    console.log('votingPrediction:', votingPrediction);
+    console.log('simpleAveragePrediction:', simpleAveragePrediction);
 
     // Create the pie charts
     this.createPieChart(ctxFnn, fnnPrediction);
     this.createPieChart(ctxWideAndDeep, wideAndDeepPrediction);
     this.createPieChart(ctxCnn, cnnPrediction);
-    this.createPieChart(ctxEnsemble, ensemblePrediction);
+    this.createPieChart(ctxStacking, stackingPrediction);
+    this.createPieChart(ctxVoting, votingPrediction);
+    this.createPieChart(ctxSimpleAverage, simpleAveragePrediction);
   }
 
   createPieChart(ctx: HTMLElement | null, prediction: number) {
@@ -371,17 +380,17 @@ export class LandingPageComponent implements OnInit {
     // You can add additional logic here if needed
     console.log(this.finalPredictions);
     // create pie chart for the selected ensemble technique
-    switch (this.selectedEnsembleTechnique) {
-      case 'Stacking':
-        this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[3]);
-        break;
-      case 'Voting':
-        this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[4]);
-        break;
-      case 'Simple Average':
-        this.createPieChart(document.getElementById('ensembleChart'), this.finalPredictions[5]);
-        break;
-    }
+    // switch (this.selectedEnsembleTechnique) {
+    //   case 'Stacking':
+        this.createPieChart(document.getElementById('stackingChart'), this.finalPredictions[3]);
+      //   break;
+      // case 'Voting':
+        this.createPieChart(document.getElementById('votingChart'), this.finalPredictions[4]);
+      //   break;
+      // case 'Simple Average':
+        this.createPieChart(document.getElementById('simpleAverageChart'), this.finalPredictions[5]);
+    //     break;
+    // }
   }
 
   // Inside your LandingPageComponent class
