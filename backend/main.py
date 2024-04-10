@@ -1,27 +1,27 @@
 from flask import Flask
 from flask_cors import CORS, cross_origin
 import pickle
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd # type: ignore
+import numpy as np # type: ignore
+import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns # type: ignore
 import pickle
-from keras.models import load_model
+from keras.models import load_model # type: ignore
 from flask import Flask, request, jsonify
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline
-from sklearn.decomposition import TruncatedSVD
-from sklearn.preprocessing import LabelEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.pipeline import Pipeline
-from sklearn.decomposition import TruncatedSVD
-from sklearn.model_selection import train_test_split
-from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import BaggingClassifier
+from sklearn.compose import ColumnTransformer # type: ignore
+from sklearn.preprocessing import StandardScaler, OneHotEncoder # type: ignore
+from sklearn.impute import SimpleImputer # type: ignore
+from sklearn.pipeline import Pipeline # type: ignore
+from sklearn.decomposition import TruncatedSVD # type: ignore
+from sklearn.preprocessing import LabelEncoder # type: ignore
+from sklearn.compose import ColumnTransformer # type: ignore
+from sklearn.impute import SimpleImputer # type: ignore
+from sklearn.preprocessing import StandardScaler, OneHotEncoder # type: ignore
+from sklearn.pipeline import Pipeline # type: ignore
+from sklearn.decomposition import TruncatedSVD # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from sklearn.neural_network import MLPClassifier # type: ignore
+from sklearn.ensemble import BaggingClassifier # type: ignore
 import sqlite3
 from datetime import datetime
 
@@ -209,11 +209,8 @@ def makePredictions():
     
     
     save_prediction_history(prediction_name, form_data, binary_predictions)
-
-    # Fix TypeError: Object of type ndarray is not JSON serializable at return statement
     
     # final_predictions_list = final_predictions.tolist()
-
 
     # Return final predictions 
     return {

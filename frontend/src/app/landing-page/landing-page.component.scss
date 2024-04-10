@@ -62,13 +62,13 @@ canvas {
 }
 
 .sidebar {
-    height: 100vh; /* Make the sidebar span the entire height of the viewport */
-    overflow-y: auto; /* Add a scrollbar if the content overflows */
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .main-content {
-    width: calc(100vw - 14rem); /* Adjust the width as needed */
-    overflow-y: auto; /* Add a scrollbar if the content overflows */
+    width: calc(100vw - 14rem);
+    overflow-y: auto;
 }
 
 .footer {
