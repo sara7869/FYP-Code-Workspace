@@ -239,7 +239,7 @@ def get_recent_predictions():
         cursor = conn.execute('''
             SELECT * FROM prediction_history
             ORDER BY timestamp DESC
-            LIMIT 10
+            LIMIT 30
         ''')
         recent_predictions = cursor.fetchall()
 

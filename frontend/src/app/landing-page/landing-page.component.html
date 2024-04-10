@@ -5,14 +5,16 @@
 
     <div class="flex flex-col flex-wrap md:flex-row">
         <!-- Sidebar - History -->
-        <div class="md:w-1/6 p-4 bg-slate-200">
-            <div class="text-xl ml-6">Prediction History</div>
+        <div id="sidebar" class="p-4 bg-slate-200 sidebar" style="width: 14rem;">
+            <div class="text-xl ml-6 font-semibold">Prediction History</div>
             <div *ngFor="let prediction of predictionsList"
                 class="mt-2 mb-2 rounded hover:bg-slate-300 px-2 py-1 ml-4 cursor-pointer">
                 <div>{{prediction?.prediction_name}}</div>
                 <div class="text-xs text-slate-700">{{ prediction?.timestamp }}</div>
-                <button (click)="loadPredictionIntoForm(prediction)" style="color: rgb(41, 105, 105);">Load into
-                    Form</button>
+                <button (click)="loadPredictionIntoForm(prediction)" class="rounded px-2 py-1 mt-2 text-sm text-black"
+                    style="background-color: rgb(75,192,192)">
+                    Load into Form
+                </button>
             </div>
         </div>
 
@@ -326,7 +328,7 @@
             <div class="mt-6">
                 <!-- <button (click)="onPredictClick()" [disabled]="myForm.invalid"
                 class="px-4 py-2 rounded bg-gradient-to-r from-green-400 to-blue-400 mr-4 font-semibold">Predict</button> -->
-                <button (click)="onPredictClick()" class="px-4 py-2 rounded  mr-4 font-semibold"
+                <button (click)="onPredictClick(); adjustSidebarHeight();" class="px-4 py-2 rounded  mr-4 font-semibold"
                     style="background-color: rgba(75,192,192,1);">Predict</button>
                 <button (click)="onCancelClick()"
                     class="px-4 py-2 rounded bg-black text-white mr-4 font-semibold">Cancel</button>
@@ -350,93 +352,72 @@
                                 <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">FNN</div>
                                     <div class="text-base">{{ this.finalPredictions[0] }}</div>
-                                    <canvas class="mt-4" id="fnnChart"></canvas>
+                                    <canvas class="mt-4 mx-auto" id="fnnChart"></canvas>
                                 </div>
 
                                 <!-- Pie chart for Wide and Deep -->
                                 <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">Wide and Deep</div>
                                     <div class="text-base">{{ this.finalPredictions[1] }}</div>
-                                    <canvas class="mt-4" id="wideAndDeepChart"></canvas>
+                                    <canvas class="mt-4 mx-auto" id="wideAndDeepChart"></canvas>
                                 </div>
 
                                 <!-- Pie chart for CNN -->
                                 <div class="w-full md:w-1/3 text-center mt-8">
                                     <div class="text-base font-semibold">CNN</div>
                                     <div class="text-base">{{ this.finalPredictions[2] }}</div>
-                                    <canvas class="mt-4" id="cnnChart"></canvas>
+                                    <canvas class="mt-4 mx-auto" id="cnnChart"></canvas>
                                 </div>
 
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-100 p-4 my-4 rounded" style="height: 30rem;">
-                        <div class="text-xl">Ensemble Predictions</div>
-                        <div class="mt-8">
-                            <label for="ensembleTechnique" class="mr-2">Ensemble Technique: </label>
-                            <select name="ensembleTechnique" id="ensembleTechnique"
-                                [(ngModel)]="selectedEnsembleTechnique" (change)="onEnsembleTechniqueChange($event)">
-                                <option value="Stacking">Stacking</option>
-                                <option value="Voting">Voting</option>
-                                <option value="Simple Average">Simple Average</option>
-                            </select>
-                        </div>
+                    <div class="bg-slate-100 p-4 my-4 rounded h-auto md:h-fit" style="height: auto;">
+                        <div class="text-xl h-fit">
 
-                        <div class="flex flex-wrap justify-between">
+                            Ensemble Predictions
 
-
-                            <div class="w-full text-center mt-8 bg-slate-300 rounded p-2" style="width: 15rem; height: 21rem;">
-                                <!-- Display predictions for Stacking -->
-                                <!-- <div class="text-base font-semibold">{{selectedEnsembleTechnique}}</div> -->
-                                <div class="text-base font-semibold">Stacking (Selected)</div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                                    {{ this.finalPredictions[3] }}
-                                </div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                                    {{ this.finalPredictions[4] }}
-                                </div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Voting'">
-                                    {{ this.finalPredictions[5] }}
-                                </div>
-                                <canvas class="mt-4" id="stackingChart"></canvas>
+                            <div class="mt-8 text-base">
+                                <label for="ensembleTechnique" class="mr-2">Ensemble Technique: </label>
+                                <select name="ensembleTechnique" id="ensembleTechnique"
+                                    [(ngModel)]="selectedEnsembleTechnique"
+                                    (change)="onEnsembleTechniqueChange($event)">
+                                    <option value="Stacking">Stacking</option>
+                                    <option value="Voting">Voting</option>
+                                    <option value="Simple Average">Simple Average</option>
+                                </select>
                             </div>
 
-                            <div class="w-full text-center mt-8" style="width: 15rem; height: 15rem;">
-                                <!-- Display predictions for Stacking -->
-                                <!-- <div class="text-base font-semibold">{{selectedEnsembleTechnique}}</div> -->
-                                <div class="text-base font-semibold">Voting</div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                                    {{ this.finalPredictions[3] }}
+                            <div class="flex flex-wrap justify-between h-fit mb-4">
+                                <!-- Pie chart for Stacking -->
+                                <div class="w-full md:w-1/3 text-center mt-8 p-2 pb-8"
+                                    [ngClass]="{'bg-slate-300 rounded': selectedEnsembleTechnique === 'Stacking'}">
+                                    <div class="text-base font-semibold">Stacking (Default)</div>
+                                    <div class="text-base">{{ this.finalPredictions[3] }}</div>
+                                    <canvas class="mt-4 mx-auto" id="stackingChart"></canvas>
                                 </div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                                    {{ this.finalPredictions[4] }}
-                                </div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Voting'">
-                                    {{ this.finalPredictions[5] }}
-                                </div>
-                                <canvas class="mt-4" id="votingChart"></canvas>
-                            </div>
 
-                            <div class="w-full text-center mt-8" style="width: 15rem; height: 15rem;">
-                                <!-- Display predictions for Stacking -->
-                                <!-- <div class="text-base font-semibold">{{selectedEnsembleTechnique}}</div> -->
-                                <div class="text-base font-semibold">Simple Average</div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Stacking'">
-                                    {{ this.finalPredictions[3] }}
+                                <!-- Pie chart for Voting -->
+                                <div class="w-full md:w-1/3 text-center mt-8 p-2 pb-8"
+                                    [ngClass]="{'bg-slate-300 rounded': selectedEnsembleTechnique === 'Voting'}">
+                                    <div class="text-base font-semibold">Voting</div>
+                                    <div class="text-base">{{ this.finalPredictions[4] }}</div>
+                                    <canvas class="mt-4 mx-auto" id="votingChart"></canvas>
                                 </div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Simple Average'">
-                                    {{ this.finalPredictions[4] }}
+
+                                <!-- Pie chart for Simple Average -->
+                                <div class="w-full md:w-1/3 text-center mt-8 pb-8"
+                                    [ngClass]="{'bg-slate-300 rounded': selectedEnsembleTechnique === 'Simple Average'}">
+                                    <div class="text-base font-semibold">Simple Average</div>
+                                    <div class="text-base">{{ this.finalPredictions[5] }}</div>
+                                    <canvas class="mt-4 mx-auto" id="simpleAverageChart"></canvas>
                                 </div>
-                                <div class="text-base" *ngIf="selectedEnsembleTechnique === 'Voting'">
-                                    {{ this.finalPredictions[5] }}
-                                </div>
-                                <canvas class="mt-4" id="simpleAverageChart"></canvas>
+
                             </div>
                         </div>
-
-
                     </div>
+
                 </div>
 
                 <div id="prediction_analysis">
@@ -545,6 +526,11 @@
 
     </div>
 
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Sara Yusri (w1830237)</p>
+        </div>
+    </footer>
 </div>
 
 

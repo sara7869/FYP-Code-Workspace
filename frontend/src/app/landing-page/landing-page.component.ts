@@ -370,50 +370,60 @@ export class LandingPageComponent implements OnInit {
 
   }
 
-  togglePredictionResults() {
-    this.showPredictionResults = this.showPredictionResults = true;
+togglePredictionResults() {
+  this.showPredictionResults = this.showPredictionResults = true;
+}
+
+onEnsembleTechniqueChange(event: Event): void {
+  const selectElement = event.target as HTMLSelectElement;
+  this.selectedEnsembleTechnique = selectElement.value;
+  // You can add additional logic here if needed
+  console.log(this.finalPredictions);
+  // create pie chart for the selected ensemble technique
+  // switch (this.selectedEnsembleTechnique) {
+  //   case 'Stacking':
+  this.createPieChart(document.getElementById('stackingChart'), this.finalPredictions[3]);
+  //   break;
+  // case 'Voting':
+  this.createPieChart(document.getElementById('votingChart'), this.finalPredictions[4]);
+  //   break;
+  // case 'Simple Average':
+  this.createPieChart(document.getElementById('simpleAverageChart'), this.finalPredictions[5]);
+  //     break;
+  // }
+}
+
+adjustSidebarHeight() {
+  var sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    sidebar.style.height = '250vh';
+    console.log('Sidebar height adjusted');
+  } else {
+    console.error('Sidebar element not found');
+  }
+}
+
+// Inside your LandingPageComponent class
+
+loadPredictionIntoForm(prediction: any): void {
+  let inputDataString = prediction.input_data;
+  console.log('Input data string:', inputDataString);
+  if(!inputDataString || inputDataString.trim() === '') {
+  alert('No input data available for this prediction.');
+  return;
+}
+inputDataString = inputDataString.replace(/'/g, '"');
+try {
+  const inputData = JSON.parse(inputDataString);
+  this.myForm.patchValue(inputData);
+  alert('Prediction values loaded into the form.');
+} catch (error) {
+  console.error('Error parsing input data:', error);
+  alert('Error loading prediction values into the form.');
+}
   }
 
-  onEnsembleTechniqueChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.selectedEnsembleTechnique = selectElement.value;
-    // You can add additional logic here if needed
-    console.log(this.finalPredictions);
-    // create pie chart for the selected ensemble technique
-    // switch (this.selectedEnsembleTechnique) {
-    //   case 'Stacking':
-        this.createPieChart(document.getElementById('stackingChart'), this.finalPredictions[3]);
-      //   break;
-      // case 'Voting':
-        this.createPieChart(document.getElementById('votingChart'), this.finalPredictions[4]);
-      //   break;
-      // case 'Simple Average':
-        this.createPieChart(document.getElementById('simpleAverageChart'), this.finalPredictions[5]);
-    //     break;
-    // }
-  }
-
-  // Inside your LandingPageComponent class
-
-  loadPredictionIntoForm(prediction: any): void {
-    let inputDataString = prediction.input_data;
-    console.log('Input data string:', inputDataString);
-    if (!inputDataString || inputDataString.trim() === '') {
-      alert('No input data available for this prediction.');
-      return;
-    }
-    inputDataString = inputDataString.replace(/'/g, '"');
-    try {
-      const inputData = JSON.parse(inputDataString);
-      this.myForm.patchValue(inputData);
-      alert('Prediction values loaded into the form.');
-    } catch (error) {
-      console.error('Error parsing input data:', error);
-      alert('Error loading prediction values into the form.');
-    }
-  }
-
-  saveAndReload(): void {
-    location.reload();
-  }
+saveAndReload(): void {
+  location.reload();
+}
 }
