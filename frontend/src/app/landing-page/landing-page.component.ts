@@ -395,6 +395,7 @@ export class LandingPageComponent implements OnInit {
     try {
       const inputData = JSON.parse(inputDataString);
       this.myForm.patchValue(inputData);
+      this.myForm.controls['PredictionName'].setValue(prediction.prediction_name);
       alert('Prediction values loaded into the form.');
     } catch (error) {
       console.error('Error parsing input data:', error);
