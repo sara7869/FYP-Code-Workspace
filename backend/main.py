@@ -55,8 +55,9 @@ init_db()
 # Load the dataset
 project_data = pd.read_csv("../dataset/Employee Analysis Attrition Report/HR Employee Attrition.csv")
 X_train=project_data.drop(columns=["Attrition"])
+X_train = X_train.drop(columns=["EmployeeCount", "EmployeeNumber", "Over18", "StandardHours"]) # I'm dropping the Attrition column to get X
 y_train=project_data["Attrition"]
-X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.3)
+X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.2)
 
 # Load Base Models
 fnn_model = load_model("../fnn_model.h5")
